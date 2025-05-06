@@ -1,4 +1,10 @@
-import { LicenseClass, PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
+
+enum LicenseClass {
+  CLASS_4 = "CLASS_4",
+  CLASS_5 = "CLASS_5",
+  CLASS_7 = "CLASS_7",
+}
 
 const prisma = new PrismaClient();
 
