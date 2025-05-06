@@ -1,0 +1,39 @@
+.lesson-form {
+  display: flex;
+  flex-direction: column;
+
+  label{
+    color:black;
+    font-weight:700
+  }
+
+  li{
+    font-size:11px
+  }
+
+
+  input[type="text"],input[type="date"],select{
+      background-color:white;
+      height: 35px;
+      font-size: 15px;
+  }
+}
+
+select{
+  border-radius: 7px;
+  padding: 0 12px;
+}
+
+@media screen and (min-width: 1024px) {
+  .lesson-form {
+    label{
+      color:#333333;
+      font-weight: 700;
+    }
+
+    input[type=text],input[type=date]{
+      height:45px;
+      font-size: 18px;
+    }
+  }
+}

@@ -1,0 +1,28 @@
+.accordion{
+  border-left: 4px solid #FFCE47;
+}
+
+.trigger{
+  padding: 16px 24px 18px 24px;
+  border-left: 4px solid #FFCE47;
+  background-color: white;
+  box-shadow: 0px 2px 4px 0px #DEDCD5;
+}
+
+.trigger2{
+  padding: 16px 24px 18px 45px;
+  background-color: white;
+}
+
+.inner-accordion{
+  box-shadow: 0px 2px 4px 0px #DEDCD5;
+}
+
+.container a{
+  color: #FFCE47;
+  text-decoration: underline;
+
+  &:hover{
+    color:rgb(0, 123, 255);
+  }
+}

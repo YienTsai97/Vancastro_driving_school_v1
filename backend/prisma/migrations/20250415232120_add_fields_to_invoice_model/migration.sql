@@ -1,0 +1,10 @@
+-- AlterTable
+ALTER TABLE "invoices" ADD COLUMN     "discount_percent" INTEGER NOT NULL DEFAULT 0,
+ADD COLUMN     "due_date" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ADD COLUMN     "invoice_date" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ADD COLUMN     "invoice_number" TEXT,
+ADD COLUMN     "payer_id" INTEGER NOT NULL DEFAULT 1,
+ADD COLUMN     "total_amount" DECIMAL(65,30) NOT NULL DEFAULT 0.00;
+
+-- AddForeignKey
+ALTER TABLE "invoices" ADD CONSTRAINT "invoices_payer_id_fkey" FOREIGN KEY ("payer_id") REFERENCES "payers"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

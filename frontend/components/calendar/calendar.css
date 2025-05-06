@@ -1,0 +1,137 @@
+.fc-header-toolbar.fc-toolbar.fc-toolbar-ltr {
+  display: flex;
+  gap: 20px;
+  margin: auto;
+  margin-bottom: 23px;
+}
+
+.fc-next-button.fc-button.fc-button-primary {
+  background-color: transparent;
+  border: none;
+}
+
+.fc-prev-button.fc-button.fc-button-primary {
+  background-color: transparent;
+  border: none;
+}
+
+.fc-icon.fc-icon-chevron-right {
+  color: #2F2F2F
+}
+
+.fc-icon.fc-icon-chevron-left {
+  color: #2F2F2F
+}
+
+.fc-header-toolbar .fc-toolbar-title {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.fc-theme-standard th {
+  border: none;
+}
+
+.fc-theme-standard td {
+  border-left: none;
+  border-right: none;
+
+  :nth-child(1) {
+    border: none;
+  }
+}
+
+/* remove all tables' outer border */
+.fc-theme-standard table {
+  border: none !important;
+}
+
+/* only dayGridMonth: remove all border of the grid in table */
+.fc-dayGridMonth-view td,
+.fc-theme-standard .fc-dayGridMonth-view th {
+  border: none;
+}
+
+/* dayGridMonth date center */
+.fc .fc-daygrid-day-top {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  font-weight: 600;
+}
+
+/* TimeGridWeek & TimeGridDay table td row 1 tranform*/
+.fc .fc-timegrid-slot-label-cushion {
+  transform: translateY(-15px);
+}
+
+/* ex 04/05 row in TimeGrid week */
+.fc-col-header-cell-cushion {
+  font-size: 14px;
+}
+
+/* TimeGridDay TimeGridWeek time grid height setting*/
+.fc-timegrid-slot {
+  height: 30px !important;
+  font-size: 10px;
+  color: gray
+}
+
+/* Hide the slotMinTime due to styling needed */
+.fc-timegrid-slot-label[data-time="07:00:00"] {
+  visibility: hidden;
+}
+
+.fc-daygrid-day-events {
+  display: flex;
+  justify-content: center;
+}
+
+.fc-timegrid {
+  position: relative;
+}
+
+/* indicator */
+.fc .fc-timegrid-now-indicator-line {
+  border-color: black !important;
+  border-style: solid !important;
+  border-width: 1px 0px 0px !important;
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  z-index: 4;
+}
+
+.fc .fc-timegrid-now-indicator-arrow {
+  background-color: black;
+  border-style: solid;
+  border-radius: 15px;
+  margin-top: -2px;
+  margin-left: 29px;
+  width: 8px;
+  height: 8px;
+  position: absolute;
+}
+
+/* Today Title- dayGridMonth */
+.fc-daygrid-day.fc-day-today {
+  background-color: transparent !important;
+  color: white;
+
+  .fc-daygrid-day-top .fc-daygrid-day-number {
+    background-color: #2F2F2F;
+    border-radius: 10px;
+    width: 32px;
+    height: 32px;
+    text-align: center;
+  }
+}
+
+/* Today Title- timeGridWeek */
+.fc .fc-col-header-cell-cushion {
+  color: #777777
+}
+
+.fc .fc-day-today .fc-col-header-cell-cushion {
+  color: #2F2F2F
+}

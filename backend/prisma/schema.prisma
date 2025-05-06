@@ -1,0 +1,274 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Enum definition
+
+enum Role {
+  ADMIN
+  STUDENT
+  INSTRUCTOR
+}
+
+enum LessonStatus {
+  PENDING
+  APPROVED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCESS
+  REFUNDED
+}
+
+enum InvoiceStatus {
+  PAID
+  PARTIALLY_PAID
+  UNPAID
+  CANCELLED
+  REFUNDED
+}
+
+
+enum PackageClass {
+  CLASS_5
+  CLASS_7
+  CLASS_4
+}
+
+enum ContractStatus {
+  ONGOING
+  DONE
+}
+
+enum PurchaseStatus {
+  PENDING
+  SENT
+}
+
+enum LicenseClass {
+  CLASS_4
+  CLASS_5
+  CLASS_7
+  NO_LICENSE
+}
+
+// Model definition
+model User {
+  id            Int      @id @default(autoincrement())
+  clerkId       String   @unique @map("clerk_id")
+  payers        Payer[]  @relation("payers")
+
+  role          Role     @default(STUDENT)
+  firstName     String   @map("first_name")
+  lastName      String   @map("last_name")
+  email         String   @unique
+  phone         String   @unique
+  language      String
+  streetAddress String   @map("street_address")
+  unitNumber    String?  @map("unit_number")
+  city          String
+  province      String
+  postalCode    String   @map("postal_code")
+  country       String   @default("Canada")
+
+  dateOfBirth   DateTime @map("date_of_birth")
+  licenseNumber Int?     @map("license_number")
+  licenseClass  LicenseClass @map("license_class")
+  availability  Json?
+
+  emergencyContactNumber String @map("emergency_contact_number")
+  emergencyContactName  String @map("emergency_contact_name")
+  contractId    Int? @map("contract_id")
+  qbAccessToken           String? @map("qb_access_token")
+  qbAccessTokenExpiresAt  DateTime? @map("qb_access_token_expires_at")
+  qbRefreshToken          String? @map("qb_refresh_token")
+  qbRefreshTokenExpiresAt DateTime? @map("qb_refresh_token_expires_at")
+
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  lessonsAsStudent    Lesson[]  @relation("student")
+  lessonsAsInstructor Lesson[]  @relation("instructor")
+  userInvoice         Invoice[] @relation("userInvoice")
+  userContract        Contract[] @relation("userContract")
+  userPurchase       Purchase[] @relation("userPurchase")
+
+  @@map("users")
+}
+
+model Lesson {
+  id           Int      @id @default(autoincrement())
+  studentId    Int      @map("student_id")
+  student      User     @relation(fields: [studentId], references: [id], name: "student")
+  instructorId Int      @map("instructor_id")
+  instructor   User     @relation(fields: [instructorId], references: [id], name: "instructor")
+  invoiceId    Int      @map("invoice_id")
+  invoice      Invoice  @relation(fields: [invoiceId], references: [id])
+  lessonTypeId Int      @map("lesson_type_id") @default(1) // Remove default value later
+  lessonType   LessonType @relation(fields: [lessonTypeId], references: [id], name: "lesson_type_in_lesson")
+
+  startTime    DateTime @map("start_time")
+  endTime      DateTime @map("end_time")
+  status       LessonStatus @default(PENDING)
+  location     String
+
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  @@map("lessons")
+}
+
+model Invoice {
+  id            Int      @id @default(autoincrement())
+  userId        Int      @map("user_id")
+  user          User     @relation(fields: [userId], references: [id], name: "userInvoice")
+  qbInvoiceId   String   @map("qb_invoice_id")
+  purchaseId    Int      @map("purchase_id") @default(1) // Remove default value later
+  purchase      Purchase? @relation(fields: [purchaseId], references: [id], name: "invoicePurchase")
+
+  status        InvoiceStatus @default(UNPAID)
+  lessonCount   Int      @map("lesson_count") @default(0)
+
+  invoiceNumber String?  @map("invoice_number") // Make nullable and unique later
+  totalAmount   Decimal  @map("total_amount") @default(0.00) // Remove default value later
+  invoiceDate   DateTime @map("invoice_date") @default(now())
+  dueDate       DateTime @map("due_date") @default(now()) // Remove default value later
+  discountPercent Int @map("discount_percent") @default(0)
+
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  lessons       Lesson[]
+  invoiceTransactions Transaction[] @relation("invoiceTransaction")
+
+  @@map("invoices")
+}
+
+model Transaction {
+  id              Int      @id @default(autoincrement())
+  invoiceId       Int      @map("invoice_id")
+  invoice         Invoice  @relation(fields: [invoiceId], references: [id], name: "invoiceTransaction")
+
+  amount          Decimal
+  issueDate       DateTime @map("issue_date")
+
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  @@map("transactions")
+}
+
+model Contract {
+  id            Int      @id @default(autoincrement())
+  userId        Int      @map("user_id")
+  user          User     @relation(fields: [userId], references: [id], name: "userContract")
+  licenseClass  LicenseClass @map("license_class")
+  status        ContractStatus @default(ONGOING)
+  signature     String
+
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  @@map("contracts")
+}
+
+model Purchase {
+  id            Int      @id @default(autoincrement())
+  userId        Int      @map("user_id")
+  user          User     @relation(fields: [userId], references: [id], name: "userPurchase")
+  payerId       Int      @map("payer_id") @default(1) // Remove default value later
+  payer         Payer    @relation(fields: [payerId], references: [id], name: "purchasePayer")
+  licenseClass  LicenseClass @map("license_class")
+  status        PurchaseStatus @default(PENDING)
+
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  items        PurchaseItem[] @relation("purchaseItems")
+
+  invoice      Invoice[] @relation("invoicePurchase")
+
+  @@map("purchases")
+}
+
+model PurchaseItem {
+  id            Int      @id @default(autoincrement())
+  purchaseId    Int      @map("purchase_id")
+  purchase      Purchase  @relation(fields: [purchaseId], references: [id], name: "purchaseItems")
+  lessonTypeId  Int      @map("lesson_type_id")
+  lessonType    LessonType @relation(fields: [lessonTypeId], references: [id], name: "purchase_lesson_type")
+  quantity      Int      @default(1)
+  unitPrice     Decimal  @map("unit_price")
+
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  @@map("purchase_items")
+}
+
+model LessonType {
+  id           Int    @id @default(autoincrement())
+  qbServiceId  String? @map("qb_service_id")
+  lessonName   String @map("lesson_name")
+  licenseClass LicenseClass @map("license_class")
+  lessonLength Int    @map("lesson_length")
+  count        Int    @default(1)
+  price        Decimal
+
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  lessons       Lesson[] @relation("lesson_type_in_lesson")
+  purchaseItems    PurchaseItem[] @relation("purchase_lesson_type")
+
+  @@map("lesson_types")
+}
+
+model TravelTime {
+  id              Int      @id @default(autoincrement())
+  location1       String
+  location2       String
+  durationMinutes Int      @map("duration_minutes")
+
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  @@map("travel_times")
+}
+
+model Payer {
+  id            Int      @id @default(autoincrement())
+  userId        Int      @map("user_id")
+  user          User     @relation(fields: [userId], references: [id], name: "payers")
+  qbCustomerId  String?  @map("qb_customer_id")
+  firstName     String   @map("first_name") @default("") // Remove default value later
+  lastName      String   @map("last_name") @default("") // Remove default value later
+  email         String?  // Make nullable and unique later
+  phone         String?  // Make nullable and unique later
+  streetAddress String   @map("street_address") @default("") // Remove default value later
+  unitNumber    String?  @map("unit_number")
+  city          String   @default("") // Remove default value later
+  province      String   @default("") // Remove default value later
+  postalCode    String   @map("postal_code") @default("") // Remove default value later
+  country       String   @default("Canada") // Remove default value later
+
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  purchases     Purchase[] @relation("purchasePayer")
+
+  @@map("payers")
+}
