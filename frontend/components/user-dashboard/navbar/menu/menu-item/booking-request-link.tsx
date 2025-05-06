@@ -3,7 +3,6 @@ import clickboard from "@/public/assets/dashboard/clickboard.svg";
 import clickboardBlack from "@/public/assets/dashboard/clickboardBlack.svg";
 import { LessonStatus } from "@/types/lesson.type";
 import { getLessonsByStatus } from "@/utils/lessonFetch";
-import Image from 'next/image';
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
