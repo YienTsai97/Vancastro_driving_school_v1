@@ -56,7 +56,7 @@ export const InstructorMenu = ({ isMobile }: Props) => {
         <Image
           width={18}
           height={18}
-          src={currentPath === "/instructor/lessons" || hoverLessons ? carBlack.src : car.src}
+          src={currentPath === "/instructor/lessons" || hoverLessons ? carBlack : car}
           style={{ width: "18px", height: "18px" }}
           alt="car"
         />
@@ -73,7 +73,7 @@ export const InstructorMenu = ({ isMobile }: Props) => {
         <Image
           width={18}
           height={18}
-          src={currentPath === "/instructor/finance" || hoverFinance ? invoiceBlack.src : invoice.src}
+          src={currentPath === "/instructor/finance" || hoverFinance ? invoiceBlack : invoice}
           style={{ width: "18px", height: "18px" }}
           alt="finance"
         />
@@ -100,7 +100,7 @@ export const InstructorMenu = ({ isMobile }: Props) => {
               <Image
                 width={18}
                 height={18}
-                src={currentPath === "/instructor/profile" || hoverProfile ? profileBlack.src : profile.src}
+                src={currentPath === "/instructor/profile" || hoverProfile ? profileBlack : profile}
                 style={{ width: "18px", height: "18px" }}
                 alt="profile"
               />

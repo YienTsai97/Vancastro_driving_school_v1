@@ -3,8 +3,8 @@ import clickboard from "@/public/assets/dashboard/clickboard.svg";
 import clickboardBlack from "@/public/assets/dashboard/clickboardBlack.svg";
 import { LessonStatus } from "@/types/lesson.type";
 import { getLessonsByStatus } from "@/utils/lessonFetch";
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import useSWR from 'swr';
@@ -30,17 +30,10 @@ export default function BookingRequestLink({ handleClick }: Props) {
       onMouseLeave={() => setHoverBookingRequest(false)}
     >
       <Image
-<<<<<<< HEAD
-        src={currentPath === "/instructor/booking-request" || hoverBookingRequest ? clickboardBlack.src : clickboard.src}
         width={18}
         height={18}
-        className="sideBar-Icon"
-=======
-        width={18}
-        height={18}
-        src={currentPath === "/instructor/booking-request" || hoverBookingRequest ? clickboardBlack.src : clickboard.src}
+        src={currentPath === "/instructor/booking-request" || hoverBookingRequest ? clickboardBlack : clickboard}
         style={{ width: "18px", height: "18px" }}
->>>>>>> 7c68c1b9aa034dfde0f13899edb79a213b69c3e2
         alt="clickboard"
       />
       {pendingLessonsCount > 0 ?
