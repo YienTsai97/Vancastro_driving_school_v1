@@ -8,7 +8,7 @@ type PageProps<T = {}> = {
 };
 
 export default async function page({ params }: PageProps<{ id: string }>) {
-  const { id } = await params;
+  const { id } = params;
   const purchaseId = Number(id);
   if (!purchaseId) {
     return <div>Purchase ID invalid</div>;
