@@ -1,11 +1,11 @@
 "use client";
+import logo from "@/public/assets/logo.png";
 import { SignOutButton, SignedIn, SignedOut } from "@clerk/nextjs";
 import { Popover, PopoverContent, PopoverTrigger } from "@radix-ui/react-popover";
 import { LayoutDashboard, LogOut, Menu, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import logo from "../../public/assets/logo.png";
 import { HeaderUser } from "./header-user";
 import NavMenu from "./menu";
 

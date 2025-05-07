@@ -1,9 +1,9 @@
+import fbIcon from "@/public/assets/fbIcon.svg";
+import instagramIcon from "@/public/assets/instagramIcon.svg";
+import whatsappIcon from "@/public/assets/whatsappIcon.svg";
+import youtubeIcon from "@/public/assets/youtubeIcon.svg";
 import Image from "next/image";
 import Link from "next/link";
-import fbIcon from "../../../public/assets/fbIcon.svg";
-import instagramIcon from "../../../public/assets/instagramIcon.svg";
-import whatsappIcon from "../../../public/assets/whatsappIcon.svg";
-import youtubeIcon from "../../../public/assets/youtubeIcon.svg";
 
 export default function ContactSocialmedia() {
   return (

@@ -1,7 +1,7 @@
 "use client";
+import blackstar from "@/public/assets/blackstar.svg";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import Image from "next/image";
-import blackstar from "../../../public/assets/blackstar.svg";
 import BeginnerCardsCarousel from "./carrousel/beginner-cards";
 import SwitchCardsCarousel from "./carrousel/switch-cards";
 import PlanCard from "./plan-card";

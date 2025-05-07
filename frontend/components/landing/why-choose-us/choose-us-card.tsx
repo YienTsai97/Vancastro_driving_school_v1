@@ -5,11 +5,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import calendar from "@/public/assets/calendar.png";
+import medal from "@/public/assets/medal.png";
+import qna from "@/public/assets/qna.png";
+import sign from "@/public/assets/sign.png";
 import Image from "next/image";
-import calendar from "../../../public/assets/calendar.png";
-import medal from "../../../public/assets/medal.png";
-import qna from "../../../public/assets/qna.png";
-import sign from "../../../public/assets/sign.png";
 
 export default function ChooseUsCard() {
   return (

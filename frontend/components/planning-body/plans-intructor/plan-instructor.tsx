@@ -1,7 +1,7 @@
 "use client";
 import { useIsMobile } from "@/hooks/use-mobile";
-import man2 from "../../../public/assets/man2.svg";
-import woman2 from "../../../public/assets/woman2.svg";
+import man2 from "@/public/assets/man2.svg";
+import woman2 from "@/public/assets/woman2.svg";
 import InstructorCard from "./instructor-card";
 import InstructorCarousel from "./instructor-carousel/instructor-carousel";
 

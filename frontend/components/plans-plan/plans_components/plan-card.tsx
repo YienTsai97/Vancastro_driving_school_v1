@@ -6,9 +6,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import checkmark from "@/public/assets/checkmark.svg";
 import Image from "next/image";
 import Link from "next/link";
-import checkmark from "../../../public/assets/checkmark.svg";
 
 type Props = {
   title: string;

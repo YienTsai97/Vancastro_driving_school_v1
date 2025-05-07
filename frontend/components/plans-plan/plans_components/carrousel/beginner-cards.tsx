@@ -1,8 +1,8 @@
 "use client";
+import star from "@/public/assets/star.svg";
 import { EmblaOptionsType } from "embla-carousel";
 import useEmblaCarousel from "embla-carousel-react";
 import Image from "next/image";
-import star from "../../../../public/assets/star.svg";
 import PlanCard from "../plan-card";
 import "./carrousel.css";
 import { DotButton, useDotButton } from "./dot-button";

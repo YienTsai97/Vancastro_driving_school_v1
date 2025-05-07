@@ -1,10 +1,10 @@
 "use client";
+import man from "@/public/assets/man.svg";
+import woman from "@/public/assets/woman.svg";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
 import { useEffect, useRef } from "react";
-import man from "../../../public/assets/man.svg";
-import woman from "../../../public/assets/woman.svg";
 
 export default function InstructorImg() {
   gsap.registerPlugin(ScrollTrigger)
