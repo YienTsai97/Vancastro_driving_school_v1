@@ -4,14 +4,12 @@ import { getDbPayerById } from "@/utils/payerFetch";
 import { getPurchaseById } from "@/utils/purchaseFetch";
 
 
-type Props = {
-  params: { id: string };
-  searchParams: Record<string, string | string[]>;
-};
+type Props = Promise<{
+  id: string;
+}>;
 
-
-export default async function page({ params }: Props) {
-  const { id } = params;
+export default async function page({ params }: { params: Props }) {
+  const { id } = await params;
   const purchaseId = Number(id);
   if (!purchaseId) {
     return <div>Purchase ID invalid</div>;
