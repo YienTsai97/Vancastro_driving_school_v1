@@ -7,6 +7,7 @@ import man2 from "@assets/man2.svg";
 import woman2 from "@assets/woman2.svg";
 import { EmblaOptionsType } from "embla-carousel";
 import useEmblaCarousel from "embla-carousel-react";
+import { StaticImageData } from "next/image";
 import "../../../plans-plan/plans_components/carrousel/carrousel.css";
 import InstructorCard from "../instructor-card";
 
@@ -28,11 +29,11 @@ export default function InstructorCarousel({ options }: PropType) {
         <div className="embla__container">
           {/* card1 */}
           <div className="embla__slide">
-            <InstructorCard name="Anderson" src={man2} />
+            <InstructorCard name="Anderson" src={man2 as unknown as StaticImageData} />
           </div>
           {/* card 2 */}
           <div className="embla__slide">
-            <InstructorCard name="Andresa" src={woman2} />
+            <InstructorCard name="Andresa" src={woman2 as unknown as StaticImageData} />
           </div>
         </div>
       </div>

@@ -42,10 +42,10 @@ export default function DashboardNavBar({ userName, userRole, userContractId }: 
           <SidebarHeader className="flex flex-row justify-between px-6 h-[64px] items-center">
             <Link href="dashboard">
               {userRole === "STUDENT" ?
-                <Image width={72} height={36} src={logo.src} style={{ width: '72px', height: '36px' }}
+                <Image width={72} height={36} src={logo} style={{ width: '72px', height: '36px' }}
                   alt="VanCastro logo" />
                 :
-                <Image width={72} height={36} src={logoBlack.src} style={{ width: '72px', height: '36px' }}
+                <Image width={72} height={36} src={logoBlack} style={{ width: '72px', height: '36px' }}
                   alt="VanCastro logo" />
               }
             </Link>

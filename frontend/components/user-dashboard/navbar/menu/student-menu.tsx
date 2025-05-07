@@ -41,7 +41,7 @@ export const StudentMenu = ({ studentContractId, isMobile }: Props) => {
         <Image
           width={18}
           height={18}
-          src={currentPath === "/student/dashboard" || hoverDashboard ? profileBlack.src : profile.src}
+          src={currentPath === "/student/dashboard" || hoverDashboard ? profileBlack : profile}
           className="pl-[2px]"
           alt="profile"
         />
@@ -69,7 +69,7 @@ export const StudentMenu = ({ studentContractId, isMobile }: Props) => {
         <Image
           width={18}
           height={18}
-          src={currentPath === "/student/lessons" || hoverLessons ? carBlack.src : car.src}
+          src={currentPath === "/student/lessons" || hoverLessons ? carBlack : car}
           className="pl-[2px]"
           alt="car"
         />
@@ -87,7 +87,7 @@ export const StudentMenu = ({ studentContractId, isMobile }: Props) => {
         <Image
           width={18}
           height={18}
-          src={currentPath === "/student/invoices" || hoverInvoices ? invoiceBlack.src : invoice.src}
+          src={currentPath === "/student/invoices" || hoverInvoices ? invoiceBlack : invoice}
           className="pl-[2px]"
           alt="invoice"
         />
@@ -107,7 +107,7 @@ export const StudentMenu = ({ studentContractId, isMobile }: Props) => {
           <Image
             width={20}
             height={26}
-            src={currentPath === "/student/contract" || hoverContract ? contractBlack.src : contract.src}
+            src={currentPath === "/student/contract" || hoverContract ? contractBlack : contract}
             style={{ width: '20px', height: '26px' }}
             alt="contract"
           />

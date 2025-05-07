@@ -4,6 +4,7 @@ import man2 from "@assets/man2.svg";
 import woman2 from "@assets/woman2.svg";
 import InstructorCard from "./instructor-card";
 import InstructorCarousel from "./instructor-carousel/instructor-carousel";
+import { StaticImageData } from "next/image";
 
 export default function PlanInstructor() {
   const isMobile = useIsMobile()
@@ -20,8 +21,8 @@ export default function PlanInstructor() {
 
         {!isMobile ? (
           <div className="flex gap-[105px] justify-center mb-[98px]">
-            <InstructorCard name="Anderson" src={man2} />
-            <InstructorCard name="Andresa" src={woman2} />
+            <InstructorCard name="Anderson" src={man2 as unknown as StaticImageData} />
+            <InstructorCard name="Andresa" src={woman2 as unknown as StaticImageData} />
           </div>
         ) : (
           <InstructorCarousel />
