@@ -1,6 +1,6 @@
 "use client";
 import { useIsMobile } from '@/hooks/use-mobile';
-import logo from '@/public/assets/logo.png';
+import logo from '@assets/logo.png';
 import Image from 'next/image';
 import { TriggerBubble } from './trigger-bubble';
 

@@ -1,6 +1,6 @@
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import hamburger from "@/public/assets/hamburger.svg";
-import hamburgerBlack from "@/public/assets/hamburgerBlack.svg";
+import hamburger from "@assets/hamburger.svg";
+import hamburgerBlack from "@assets/hamburgerBlack.svg";
 import Image from "next/image";
 
 type Props = {

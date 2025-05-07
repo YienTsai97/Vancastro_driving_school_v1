@@ -9,8 +9,8 @@ import {
 } from "@/components/ui/accordion";
 import { Sidebar, SidebarContent, SidebarGroup, SidebarHeader } from "@/components/ui/sidebar";
 import { useIsMobile } from "@/hooks/use-mobile";
-import logo from "@/public/assets/logo.png";
-import logoBlack from "@/public/assets/logoBlack.png";
+import logo from "@assets/logo.png";
+import logoBlack from "@assets/logoBlack.png";
 import { SignOutButton } from "@clerk/nextjs";
 import { House, LogOut } from "lucide-react";
 import Image from "next/image";

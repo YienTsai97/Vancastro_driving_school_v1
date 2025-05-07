@@ -1,9 +1,9 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import logo from "@/public/assets/logo.png";
 import { UserType } from "@/types/user.type";
 import { createContract } from "@/utils/contractFetch";
+import logo from "@assets/logo.png";
 import Image from "next/image";
 import { useState } from "react";
 import SignatureCanvas from "react-signature-canvas";

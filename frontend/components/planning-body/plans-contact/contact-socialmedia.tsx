@@ -1,7 +1,7 @@
-import fbIcon from "@/public/assets/fbIcon.svg";
-import instagramIcon from "@/public/assets/instagramIcon.svg";
-import whatsappIcon from "@/public/assets/whatsappIcon.svg";
-import youtubeIcon from "@/public/assets/youtubeIcon.svg";
+import fbIcon from "@assets/fbIcon.svg";
+import instagramIcon from "@assets/instagramIcon.svg";
+import whatsappIcon from "@assets/whatsappIcon.svg";
+import youtubeIcon from "@assets/youtubeIcon.svg";
 import Image from "next/image";
 import Link from "next/link";
 

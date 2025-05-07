@@ -6,9 +6,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import car from "@/public/assets/car.svg";
-import clock from "@/public/assets/clock.svg";
-import world from "@/public/assets/world.svg";
+import car from "@assets/car.svg";
+import clock from "@assets/clock.svg";
+import world from "@assets/world.svg";
 import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
 

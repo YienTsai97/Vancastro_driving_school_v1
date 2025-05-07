@@ -1,5 +1,5 @@
-import brazil from "@/public/assets/brazil.svg.png";
-import can from "@/public/assets/can.png";
+import brazil from "@assets/brazil.svg.png";
+import can from "@assets/can.png";
 import Image from "next/image";
 
 import { Tabs, TabsList, TabsTrigger } from "@radix-ui/react-tabs";

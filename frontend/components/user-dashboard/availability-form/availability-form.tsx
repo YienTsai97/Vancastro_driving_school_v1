@@ -13,7 +13,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { toast } from "@/hooks/use-toast";
-import plus from "@/public/assets/dashboard/plus.svg";
 import {
   AvailabilityType,
   getInstructorsAvailabilityiesType,
@@ -23,6 +22,7 @@ import {
   utcAvailabilityType,
 } from "@/types/time.type";
 import { updateUser } from "@/utils/userFetch";
+import plus from "@assets/dashboard/plus.svg";
 import { ChevronLeft } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";

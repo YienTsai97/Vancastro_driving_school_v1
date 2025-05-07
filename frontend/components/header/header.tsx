@@ -1,5 +1,5 @@
 "use client";
-import logo from "@/public/assets/logo.png";
+import logo from "@assets/logo.png";
 import { SignOutButton, SignedIn, SignedOut } from "@clerk/nextjs";
 import { Popover, PopoverContent, PopoverTrigger } from "@radix-ui/react-popover";
 import { LayoutDashboard, LogOut, Menu, X } from "lucide-react";

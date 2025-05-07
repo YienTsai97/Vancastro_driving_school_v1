@@ -5,10 +5,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import calendar from "@/public/assets/calendar.png";
-import medal from "@/public/assets/medal.png";
-import qna from "@/public/assets/qna.png";
-import sign from "@/public/assets/sign.png";
+import calendar from "@assets/calendar.png";
+import medal from "@assets/medal.png";
+import qna from "@assets/qna.png";
+import sign from "@assets/sign.png";
 import Image from "next/image";
 
 export default function ChooseUsCard() {

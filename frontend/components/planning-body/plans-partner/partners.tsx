@@ -1,5 +1,5 @@
-import blueman from "@/public/assets/blueman.svg";
-import yellowman from "@/public/assets/yellowman.svg";
+import blueman from "@assets/blueman.svg";
+import yellowman from "@assets/yellowman.svg";
 import Image from "next/image";
 
 export default function Partners() {

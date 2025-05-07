@@ -3,8 +3,8 @@ import {
   DotButton,
   useDotButton,
 } from "@/components/plans-plan/plans_components/carrousel/dot-button";
-import man2 from "@/public/assets/man2.svg";
-import woman2 from "@/public/assets/woman2.svg";
+import man2 from "@assets/man2.svg";
+import woman2 from "@assets/woman2.svg";
 import { EmblaOptionsType } from "embla-carousel";
 import useEmblaCarousel from "embla-carousel-react";
 import "../../../plans-plan/plans_components/carrousel/carrousel.css";

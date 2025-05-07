@@ -1,8 +1,8 @@
-import fb from "@/public/assets/fb.svg";
-import ig from "@/public/assets/ig.svg";
-import logo from "@/public/assets/logo.png";
-import wa from "@/public/assets/wa.svg";
-import yt from "@/public/assets/yt.svg";
+import fb from "@assets/fb.svg";
+import ig from "@assets/ig.svg";
+import logo from "@assets/logo.png";
+import wa from "@assets/wa.svg";
+import yt from "@assets/yt.svg";
 import Image from "next/image";
 import Link from "next/link";
 

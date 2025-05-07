@@ -1,4 +1,4 @@
-import planHero from "@/public/assets/planHero.webp"
+import planHero from "@assets/planHero.webp"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "../ui/button"

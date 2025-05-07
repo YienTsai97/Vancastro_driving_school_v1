@@ -6,7 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import checkmark from "@/public/assets/checkmark.svg";
+import checkmark from "@assets/checkmark.svg";
 import Image from "next/image";
 import Link from "next/link";
 

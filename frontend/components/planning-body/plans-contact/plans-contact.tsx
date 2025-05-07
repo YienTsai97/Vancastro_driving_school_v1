@@ -1,9 +1,9 @@
 "use client";
 import { useIsMobile } from "@/hooks/use-mobile";
-import emailIcon from "@/public/assets/emailIcon.svg";
-import locationIcon from "@/public/assets/locationIcon.svg";
-import phoneIcon from "@/public/assets/phoneIcon.svg";
-import planContact from "@/public/assets/planContact.svg";
+import emailIcon from "@assets/emailIcon.svg";
+import locationIcon from "@assets/locationIcon.svg";
+import phoneIcon from "@assets/phoneIcon.svg";
+import planContact from "@assets/planContact.svg";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "../../ui/button";

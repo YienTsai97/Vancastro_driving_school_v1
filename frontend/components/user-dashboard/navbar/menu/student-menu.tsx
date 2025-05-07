@@ -1,13 +1,13 @@
 "use client"
 import { useSidebar } from '@/components/ui/sidebar';
-import car from '@/public/assets/dashboard/car.svg';
-import carBlack from '@/public/assets/dashboard/carBlack.svg';
-import contract from '@/public/assets/dashboard/contract.svg';
-import contractBlack from '@/public/assets/dashboard/contractBlack.svg';
-import invoice from '@/public/assets/dashboard/invoice.svg';
-import invoiceBlack from '@/public/assets/dashboard/invoiceBlack.svg';
-import profile from '@/public/assets/dashboard/profile.svg';
-import profileBlack from '@/public/assets/dashboard/profileBlack.svg';
+import car from '@assets/dashboard/car.svg';
+import carBlack from '@assets/dashboard/carBlack.svg';
+import contract from '@assets/dashboard/contract.svg';
+import contractBlack from '@assets/dashboard/contractBlack.svg';
+import invoice from '@assets/dashboard/invoice.svg';
+import invoiceBlack from '@assets/dashboard/invoiceBlack.svg';
+import profile from '@assets/dashboard/profile.svg';
+import profileBlack from '@assets/dashboard/profileBlack.svg';
 import { ShoppingCart } from 'lucide-react';
 import Image from 'next/image';
 import Link from "next/link";

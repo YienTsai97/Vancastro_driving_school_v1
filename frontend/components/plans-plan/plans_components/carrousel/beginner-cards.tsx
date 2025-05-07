@@ -1,5 +1,5 @@
 "use client";
-import star from "@/public/assets/star.svg";
+import star from "@assets/star.svg";
 import { EmblaOptionsType } from "embla-carousel";
 import useEmblaCarousel from "embla-carousel-react";
 import Image from "next/image";
