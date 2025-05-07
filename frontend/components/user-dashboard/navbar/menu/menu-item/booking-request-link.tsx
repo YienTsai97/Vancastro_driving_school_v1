@@ -22,7 +22,7 @@ export default function BookingRequestLink({ handleClick }: Props) {
 
   return (
     <Link
-      href={"/booking-request"}
+      href="/booking-request"
       onClick={handleClick}
       className={`flex gap-4 px-5 py-4 ${currentPath === "/instructor/booking-request" ? "font-bold text-black bg-[#EDEFEC] rounded-full" : "font-semibold"
         } hover:text-black`}
