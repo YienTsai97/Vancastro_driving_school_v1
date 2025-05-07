@@ -9,10 +9,9 @@ import { getLessonsByStudentId } from "@/utils/lessonFetch";
 import { getUserById } from "@/utils/userFetch";
 
 type Props = {
-  params: {
-    id: string;
-  };
-};
+  params: Promise<{ id: string }>
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}
 
 export type LessonStatusDataType = {
   60: {
@@ -27,7 +26,8 @@ export type LessonStatusDataType = {
 
 export default async function StudentDetail({ params }: Props) {
   // Fetch student data using the ID from params
-  const studentId = Number(params.id as string);
+  const resolvedParams = await params;
+  const studentId = Number(resolvedParams.id);
   if (!studentId) {
     return <div>Student ID invalid</div>;
   }

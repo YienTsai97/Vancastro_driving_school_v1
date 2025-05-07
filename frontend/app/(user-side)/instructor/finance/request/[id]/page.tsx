@@ -8,7 +8,7 @@ type Props = {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }
 
-export default async function Page({ params, searchParams }: Props): Promise<any> {
+export default async function Page({ params }: Props): Promise<any> {
   const { id } = await params;
   const purchaseId = Number(id);
   if (!purchaseId) {
