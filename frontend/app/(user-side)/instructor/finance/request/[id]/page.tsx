@@ -3,11 +3,11 @@ import { PurchaseType } from "@/types/purchase.type";
 import { getDbPayerById } from "@/utils/payerFetch";
 import { getPurchaseById } from "@/utils/purchaseFetch";
 
-type PageProps<T = {}> = {
-  params: T;
+type Props = {
+  params: { id: string };
 };
 
-export default async function page({ params }: PageProps<{ id: string }>) {
+export default async function Page({ params }: Props) {
   const { id } = params;
   const purchaseId = Number(id);
   if (!purchaseId) {
