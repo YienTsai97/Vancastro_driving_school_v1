@@ -20,7 +20,20 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   res.status(500).json({ message: err.message });
 });
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Server is running on PORT:${PORT}.`);
 });
+
+// Deployed Server test
+import { PrismaClient } from '@prisma/client';
+const prisma = new PrismaClient();
+async function testDBConnection() {
+  try {
+    await prisma.$connect();
+    console.log('✅ Successfully connected to Render PostgreSQL!');
+  } catch (error) {
+    console.error('❌ Failed to connect to Render PostgreSQL:', error);
+  }
+}
+testDBConnection();
