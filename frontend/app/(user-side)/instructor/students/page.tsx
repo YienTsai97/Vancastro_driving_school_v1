@@ -14,7 +14,7 @@ export default async function Students() {
   // const students = users.filter((user) => user.role === Role.STUDENT);
 
   // TODO: Delete this code after the enum is fixed
-  const students = users.filter((user) => user.role === "STUDENT");
+  const students = users.filter((user) => user.role === Role.STUDENT);
 
   if (students.length === 0) {
     return <div className='text-center'>No students or instructors found.</div>;

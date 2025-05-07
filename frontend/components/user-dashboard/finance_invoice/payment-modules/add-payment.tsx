@@ -8,7 +8,7 @@ import {
   DialogTrigger
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
-import { TransactionType } from "@/types/transation.type"
+import { TransactionType } from "@/types/transaction.type"
 import { useState } from "react"
 
 
