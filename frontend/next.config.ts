@@ -19,6 +19,9 @@ const nextConfig: NextConfig = {
     // 設定 @ alias
     config.resolve.alias["@"] = __dirname;
 
+    // alias '@/public/assets/' → 實際指到 src/assets/
+    config.resolve.alias["@/public/assets"] = __dirname + "/src/assets";
+
     return config;
   },
 };
