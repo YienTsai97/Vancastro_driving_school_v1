@@ -2,7 +2,7 @@ const path = require("path");
 
 const nextConfig = {
   webpack(config) {
-    config.module.rules.push({
+    config.module.rules.unshift({
       test: /\.svg$/,
       issuer: /\.[jt]sx?$/,
       use: ["@svgr/webpack"],
