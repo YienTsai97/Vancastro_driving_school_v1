@@ -10,7 +10,7 @@ type Props = {
 };
 
 export default async function page({ params }: Props) {
-  const { id } = await params;
+  const { id } = params;
   const purchaseId = Number(id);
   if (!purchaseId) {
     return <div>Purchase ID invalid</div>;
