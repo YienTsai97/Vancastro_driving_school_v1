@@ -16,7 +16,7 @@ export const getLessons = async (): Promise<ApiResponse<LessonType[]>> => {
     const { getToken } = await auth();
     const token = await getToken();
 
-    const res = await fetch(`${process.env.API_URL}/api/v1/lessons/`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/lessons/`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -48,7 +48,7 @@ export const getLessonById = async (
     const { getToken } = await auth();
     const token = await getToken();
 
-    const res = await fetch(`${process.env.API_URL}/api/v1/lessons/${id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/lessons/${id}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -81,7 +81,7 @@ export const getLessonsByStudentId = async (
     const token = await getToken();
 
     const res = await fetch(
-      `${process.env.API_URL}/api/v1/lessons/student/${studentId}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/v1/lessons/student/${studentId}`,
       {
         method: "GET",
         headers: {
@@ -119,7 +119,7 @@ export const getLessonsByInstructorId = async (
     const token = await getToken();
 
     const res = await fetch(
-      `${process.env.API_URL}/api/v1/lessons/instructor/${instructorId}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/v1/lessons/instructor/${instructorId}`,
       {
         method: "GET",
         headers: {
@@ -156,7 +156,7 @@ export const createLesson = async (
     const { getToken } = await auth();
     const token = await getToken();
 
-    const res = await fetch(`${process.env.API_URL}/api/v1/lessons/`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/lessons/`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -192,7 +192,7 @@ export const updateLesson = async (
     const { getToken } = await auth();
     const token = await getToken();
 
-    const res = await fetch(`${process.env.API_URL}/api/v1/lessons/${id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/lessons/${id}`, {
       method: "PUT",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -225,7 +225,7 @@ export const deleteLesson = async (
     const { getToken } = await auth();
     const token = await getToken();
 
-    const res = await fetch(`${process.env.API_URL}/api/v1/lessons/${id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/lessons/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -258,7 +258,7 @@ export const getLessonsByStatus = async (
     const token = await getToken();
 
     const res = await fetch(
-      `${process.env.API_URL}/api/v1/lessons/status/${status}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/v1/lessons/status/${status}`,
       {
         method: "GET",
         headers: {

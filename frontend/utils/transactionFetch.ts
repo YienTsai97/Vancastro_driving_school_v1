@@ -1,8 +1,8 @@
 "use server"
 import { ApiResponse } from "@/types/fetcher";
+import { InvoiceStatus } from '@/types/invoice.type';
 import { TransactionRequestData, TransactionType } from "@/types/transaction.type";
 import { auth } from "@clerk/nextjs/server";
-import { InvoiceStatus} from '@/types/invoice.type';
 import { updateInvoice } from './invoiceFetch';
 
 export const getTransactions = async (): Promise<ApiResponse<number>> => {
@@ -10,7 +10,7 @@ export const getTransactions = async (): Promise<ApiResponse<number>> => {
     const { getToken } = await auth();
     const token = await getToken();
 
-    const res = await fetch(`${process.env.API_URL}/api/v1/transactions`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/transactions`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -35,7 +35,7 @@ export const getTransactionById = async (id: number): Promise<ApiResponse<number
     const { getToken } = await auth();
     const token = await getToken();
 
-    const res = await fetch(`${process.env.API_URL}/api/v1/transactions/${id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/transactions/${id}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -64,7 +64,7 @@ export const createTransaction = async (
     const { getToken } = await auth();
     const token = await getToken();
 
-    const res = await fetch(`${process.env.API_URL}/api/v1/transactions`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/transactions`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -93,7 +93,7 @@ export const updateTransaction = async (
     const { getToken } = await auth();
     const token = await getToken();
 
-    const res = await fetch(`${process.env.API_URL}/api/v1/transactions/${id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/transactions/${id}`, {
       method: "PUT",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -119,7 +119,7 @@ export const deleteTransaction = async (id: number): Promise<ApiResponse<number>
     const { getToken } = await auth();
     const token = await getToken();
 
-    const res = await fetch(`${process.env.API_URL}/api/v1/transactions/${id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/transactions/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -147,7 +147,7 @@ export const createPaymentAndUpdateInvoice = async (
   totalAmount: number,
   currentPaidAmount: number
 ): Promise<ApiResponse<TransactionType>> => {
-  
+
   try {
     if (!amount || !issueDate) {
       throw new Error("Amount and issue date are required");
@@ -163,22 +163,22 @@ export const createPaymentAndUpdateInvoice = async (
       issueDate: new Date(parsedDate).toISOString().split("T")[0],
       invoiceId,
     });
-    
+
     if (!res.success) {
       throw new Error("Failed to create payment");
     }
 
     // Update invoice status based on payment amount
-    if(res.success && res.data) {
+    if (res.success && res.data) {
       const newTotalPaid = currentPaidAmount + Number(amount);
       const newStatus = newTotalPaid >= totalAmount ? InvoiceStatus.PAID : InvoiceStatus.PARTIALLY_PAID;
-      
+
       const data = {
         status: newStatus,
       };
-      
+
       const updateRes = await updateInvoice(invoiceId, data);
-      if(!updateRes.success) {
+      if (!updateRes.success) {
         console.error("Payment created but invoice status update failed");
       }
     }
@@ -186,9 +186,9 @@ export const createPaymentAndUpdateInvoice = async (
     return res;
   } catch (error) {
     console.error("Error in createPaymentAndUpdateInvoice:", error);
-    return { 
-      success: false, 
-      message: error instanceof Error ? error.message : "Failed to process payment" 
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : "Failed to process payment"
     };
   }
 };

@@ -14,7 +14,7 @@ export const getServices = async () => {
     }
 
     const response = await fetch(
-      `${process.env.API_URL}/api/v1/oauth/services`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/v1/oauth/services`,
       {
         method: "GET",
         headers: {
@@ -39,7 +39,7 @@ export const getQbItems = async () => {
     const token = await getToken();
 
     const response = await fetch(
-      `${process.env.API_URL}/api/v1/lesson-types/qb/items`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/v1/lesson-types/qb/items`,
       {
         method: "GET",
         headers: {

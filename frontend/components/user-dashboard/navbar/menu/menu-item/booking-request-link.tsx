@@ -17,7 +17,7 @@ export default function BookingRequestLink({ handleClick }: Props) {
   const currentPath = usePathname();
   const [hoverBookingRequest, setHoverBookingRequest] = useState<boolean>(false);
   const pendingLessons = async () => await getLessonsByStatus(LessonStatus.PENDING);
-  const { data } = useSWR(`${process.env.API_URL}/api/v1/lessons/status/pending`, pendingLessons);
+  const { data } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/lessons/status/pending`, pendingLessons);
   const pendingLessonsCount = (data?.data?.length ?? 0);
 
   return (

@@ -65,7 +65,7 @@ const BookingRequest = () => {
 
   const handleAccept = (lessonId: number) => (e: React.FormEvent) => {
     handleLessonUpdate(e, lessonId, LessonStatus.APPROVED);
-    mutate(`${process.env.API_URL}/api/v1/lessons/status/pending`);
+    mutate(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/lessons/status/pending`);
   }
 
   const handleDecline = (lessonId: number) => (e: React.FormEvent) =>

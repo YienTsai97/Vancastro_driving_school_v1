@@ -14,7 +14,7 @@ export const getAuthUri = async (): Promise<string> => {
     }
 
     const response = await fetch(
-      `${process.env.API_URL}/api/v1/oauth/authUri`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/v1/oauth/authUri`,
       {
         method: 'GET',
         headers: {

@@ -20,7 +20,7 @@ export const getPayerById = async (
     const token = await getToken();
 
     const response = await fetch(
-      `${process.env.API_URL}/api/v1/payers/${id}/sync`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/v1/payers/${id}/sync`,
       {
         method: "GET",
         headers: {
@@ -53,7 +53,7 @@ export const getDbPayerById = async (
     const { getToken } = await auth();
     const token = await getToken();
 
-    const response = await fetch(`${process.env.API_URL}/api/v1/payers/${id}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/payers/${id}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -84,7 +84,7 @@ export const createPayer = async (
     const { getToken } = await auth();
     const token = await getToken();
 
-    const response = await fetch(`${process.env.API_URL}/api/v1/payers`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/payers`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -117,7 +117,7 @@ export const createPayerInDb = async (
     const { getToken } = await auth();
     const token = await getToken();
 
-    const response = await fetch(`${process.env.API_URL}/api/v1/payers/db`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/payers/db`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

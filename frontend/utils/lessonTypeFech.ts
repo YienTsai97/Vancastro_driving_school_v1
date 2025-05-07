@@ -8,7 +8,7 @@ export const getLessonTypes = async (): Promise<ApiResponse<LessonTypeInterface[
     const { getToken } = await auth();
     const token = await getToken();
 
-    const res = await fetch(`${process.env.API_URL}/api/v1/lesson-types/`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/lesson-types/`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -33,7 +33,7 @@ export const getLessonTypeById = async (id: number): Promise<ApiResponse<LessonT
     const { getToken } = await auth();
     const token = await getToken();
 
-    const res = await fetch(`${process.env.API_URL}/api/v1/lesson-types/${id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/lesson-types/${id}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -60,7 +60,7 @@ export const createLessonType = async (
     const { getToken } = await auth();
     const token = await getToken();
 
-    const res = await fetch(`${process.env.API_URL}/api/v1/lesson-types/`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/lesson-types/`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -89,7 +89,7 @@ export const updateLessonType = async (
     const { getToken } = await auth();
     const token = await getToken();
 
-    const res = await fetch(`${process.env.API_URL}/api/v1/lesson-types/${id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/lesson-types/${id}`, {
       method: "PATCH",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -115,7 +115,7 @@ export const deleteLessonType = async (id: number): Promise<ApiResponse<number>>
     const { getToken } = await auth();
     const token = await getToken();
 
-    const res = await fetch(`${process.env.API_URL}/api/v1/lesson-types/${id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/lesson-types/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,

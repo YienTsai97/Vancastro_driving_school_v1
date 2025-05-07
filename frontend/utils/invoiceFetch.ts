@@ -14,9 +14,9 @@ import { auth } from "@clerk/nextjs/server";
  */
 export const getInvoices = async (): Promise<ApiResponse<InvoiceType[]>> => {
   try {
-    const { getToken } = await auth();  
+    const { getToken } = await auth();
     const token = await getToken();
-    const response = await fetch(`${process.env.API_URL}/api/v1/invoices`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/invoices`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -24,7 +24,7 @@ export const getInvoices = async (): Promise<ApiResponse<InvoiceType[]>> => {
     });
     if (!response.ok) {
       return {
-        success: false, 
+        success: false,
         message: `Error: ${response.status} ${response.statusText}`,
       };
     }
@@ -48,7 +48,7 @@ export const getInvoiceById = async (
     const token = await getToken();
 
     const response = await fetch(
-      `${process.env.API_URL}/api/v1/invoices/${id}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/v1/invoices/${id}`,
       {
         method: "GET",
         headers: {
@@ -82,7 +82,7 @@ export const getInvoicesByUserId = async (
     const token = await getToken();
 
     const response = await fetch(
-      `${process.env.API_URL}/api/v1/invoices/user/${userId}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/v1/invoices/user/${userId}`,
       {
         method: "GET",
         headers: {
@@ -118,7 +118,7 @@ export const createInvoice = async (
     const { getToken } = await auth();
     const token = await getToken();
 
-    const response = await fetch(`${process.env.API_URL}/api/v1/invoices`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/invoices`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -154,7 +154,7 @@ export const createInvoice = async (
 //     const token = await getToken();
 
 //     const response = await fetch(
-//       `${process.env.API_URL}/api/v1/invoices/${id}`,
+//       `${process.env.NEXT_PUBLIC_API_URL}/api/v1/invoices/${id}`,
 //       {
 //         method: "PUT",
 //         headers: {
@@ -195,7 +195,7 @@ export const updateInvoice = async (
     const token = await getToken();
 
     const response = await fetch(
-      `${process.env.API_URL}/api/v1/invoices/${id}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/v1/invoices/${id}`,
       {
         method: "PUT",
         headers: {
@@ -240,7 +240,7 @@ export const deleteInvoice = async (
     const token = await getToken();
 
     const response = await fetch(
-      `${process.env.API_URL}/api/v1/invoices/${id}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/v1/invoices/${id}`,
       {
         method: "DELETE",
         headers: {

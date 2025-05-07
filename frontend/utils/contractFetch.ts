@@ -8,7 +8,7 @@ export const getContracts = async (): Promise<ApiResponse<ContractType[]>> => {
     const { getToken } = await auth();
     const token = await getToken();
 
-    const res = await fetch(`${process.env.API_URL}/api/v1/contracts`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/contracts`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -33,7 +33,7 @@ export const getContractById = async (id: number): Promise<ApiResponse<ContractT
     const { getToken } = await auth();
     const token = await getToken();
 
-    const res = await fetch(`${process.env.API_URL}/api/v1/contracts/${id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/contracts/${id}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -58,7 +58,7 @@ export const createContract = async (contractData: ContractRequestData): Promise
     const { getToken } = await auth();
     const token = await getToken();
 
-    const res = await fetch(`${process.env.API_URL}/api/v1/contracts`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/contracts`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -87,7 +87,7 @@ export const updateContract = async (
     const { getToken } = await auth();
     const token = await getToken();
 
-    const res = await fetch(`${process.env.API_URL}/api/v1/contracts/${id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/contracts/${id}`, {
       method: "PATCH",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -113,7 +113,7 @@ export const deleteContract = async (id: number): Promise<ApiResponse<number>> =
     const { getToken } = await auth();
     const token = await getToken();
 
-    const res = await fetch(`${process.env.API_URL}/api/v1/contracts/${id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/contracts/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,

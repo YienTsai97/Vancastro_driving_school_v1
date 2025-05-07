@@ -8,7 +8,7 @@ export const getTravelTimes = async (): Promise<ApiResponse<TravelTimeType[]>> =
     const { getToken } = await auth();
     const token = await getToken();
 
-    const res = await fetch(`${process.env.API_URL}/api/v1/travel-times/`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/travel-times/`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -33,7 +33,7 @@ export const getTravelTimeById = async (id: number): Promise<ApiResponse<TravelT
     const { getToken } = await auth();
     const token = await getToken();
 
-    const res = await fetch(`${process.env.API_URL}/api/v1/travel-times/${id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/travel-times/${id}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -58,7 +58,7 @@ export const createTravelTime = async (travelTimeData: TravelTimeRequestData): P
     const { getToken } = await auth();
     const token = await getToken();
 
-    const res = await fetch(`${process.env.API_URL}/api/v1/travel-times/`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/travel-times/`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -87,7 +87,7 @@ export const updateTravelTime = async (
     const { getToken } = await auth();
     const token = await getToken();
 
-    const res = await fetch(`${process.env.API_URL}/api/v1/travel-times/${id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/travel-times/${id}`, {
       method: "PATCH",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -113,7 +113,7 @@ export const deleteTravelTime = async (id: number): Promise<ApiResponse<number>>
     const { getToken } = await auth();
     const token = await getToken();
 
-    const res = await fetch(`${process.env.API_URL}/api/v1/travel-times/${id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/travel-times/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,

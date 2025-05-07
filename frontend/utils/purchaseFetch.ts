@@ -13,7 +13,7 @@ export const getPurchases = async (): Promise<ApiResponse<PurchaseType[]>> => {
     const { getToken } = await auth();
     const token = await getToken();
 
-    const res = await fetch(`${process.env.API_URL}/api/v1/purchases/`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/purchases/`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -40,7 +40,7 @@ export const getPurchaseById = async (
     const { getToken } = await auth();
     const token = await getToken();
 
-    const res = await fetch(`${process.env.API_URL}/api/v1/purchases/${id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/purchases/${id}`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -67,7 +67,7 @@ export const createPurchase = async (
     const { getToken } = await auth();
     const token = await getToken();
 
-    const res = await fetch(`${process.env.API_URL}/api/v1/purchases/`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/purchases/`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -96,7 +96,7 @@ export const updatePurchase = async (
     const { getToken } = await auth();
     const token = await getToken();
 
-    const res = await fetch(`${process.env.API_URL}/api/v1/purchases/${id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/purchases/${id}`, {
       method: 'PATCH',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -126,7 +126,7 @@ export const updatePurchaseItem = async (
     const token = await getToken();
 
     const res = await fetch(
-      `${process.env.API_URL}/api/v1/purchases/item/${id}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/v1/purchases/item/${id}`,
       {
         method: 'PATCH',
         headers: {
@@ -156,7 +156,7 @@ export const deletePurchase = async (
     const { getToken } = await auth();
     const token = await getToken();
 
-    const res = await fetch(`${process.env.API_URL}/api/v1/purchases/${id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/purchases/${id}`, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${token}`,

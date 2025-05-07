@@ -7,7 +7,7 @@ export const getUsers = async () => {
     const { getToken } = await auth();
     const token = await getToken();
 
-    const res = await fetch(`${process.env.API_URL}/api/v1/users/`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -28,7 +28,7 @@ export const getUserByClerkId = async (clerkId: string) => {
     const token = await getToken();
 
     const res = await fetch(
-      `${process.env.API_URL}/api/v1/users/clerk/${clerkId}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/clerk/${clerkId}`,
       {
         method: "GET",
         headers: {
@@ -60,7 +60,7 @@ export const createUser = async (user: UserCreateType) => {
     const { getToken } = await auth();
     const token = await getToken();
 
-    const res = await fetch(`${process.env.API_URL}/api/v1/users/`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -82,7 +82,7 @@ export const getInstructors = async () => {
     const token = await getToken();
 
     const res = await fetch(
-      `${process.env.API_URL}/api/v1/users/instructors/all`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/instructors/all`,
       {
         method: "GET",
         headers: {
@@ -104,7 +104,7 @@ export const updateUser = async (user: Partial<UserType>) => {
     const { getToken } = await auth();
     const token = await getToken();
 
-    const res = await fetch(`${process.env.API_URL}/api/v1/users/${user.id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/${user.id}`, {
       method: "PATCH",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -125,7 +125,7 @@ export const getUserById = async (id: number) => {
     const { getToken } = await auth();
     const token = await getToken();
 
-    const res = await fetch(`${process.env.API_URL}/api/v1/users/${id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/${id}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -145,7 +145,7 @@ export const deleteUser = async (id: number) => {
     const { getToken } = await auth();
     const token = await getToken();
 
-    const res = await fetch(`${process.env.API_URL}/api/v1/users/${id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,
