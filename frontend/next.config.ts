@@ -1,27 +1,24 @@
 import type { NextConfig } from "next";
+import path from "path";
 
 const nextConfig: NextConfig = {
   /* config options here */
   webpack(config) {
-    // 處理 SVG → 作為 React Component
+    // SVG → React Component
     config.module.rules.push({
       test: /\.svg$/,
       issuer: /\.[jt]sx?$/,
       use: ["@svgr/webpack"],
     });
 
-    // 處理圖片檔案
+    // other image formats
     config.module.rules.push({
       test: /\.(png|jpe?g|gif|webp)$/i,
       type: "asset/resource",
     });
 
-    // 設定 @ alias
-    config.resolve.alias["@"] = __dirname;
-
-    // alias '@/public/assets/' → 實際指到 src/assets/
-    config.resolve.alias["@/public/assets"] = __dirname + "/src/assets";
-
+    // set @ alias (public/assets unavailable for webpack)
+    config.resolve.alias["@/public/assets"] = path.resolve(__dirname, "src/assets");
     return config;
   },
 };
