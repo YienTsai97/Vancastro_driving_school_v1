@@ -3,11 +3,12 @@ import { PurchaseType } from "@/types/purchase.type";
 import { getDbPayerById } from "@/utils/payerFetch";
 import { getPurchaseById } from "@/utils/purchaseFetch";
 
+
 type Props = {
-  params: {
-    id: string;
-  };
+  params: { id: string };
+  searchParams: Record<string, string | string[]>;
 };
+
 
 export default async function page({ params }: Props) {
   const { id } = params;
