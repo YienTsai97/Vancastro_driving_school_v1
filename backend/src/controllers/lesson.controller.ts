@@ -100,6 +100,64 @@ const getLessonsByInstructorId = async (
   }
 };
 
+const getRecentApprovedLessonsByInstructorId = async (
+  req: Request<{ id: string }, unknown, unknown, {
+    status?: LessonStatus;
+    from?: string;      // YYYY-MM-DD
+    to?: string;        // optional
+    page?: string;      // "1"
+    pageSize?: string;  // "20"
+  }>,
+  res: Response
+) => {
+  try {
+    const instructorId = Number(req.params.id);
+    const { status, from, to, page = "1", pageSize = "20" } = req.query;
+
+    const pageNum = Math.max(1, Number(page) || 1);
+    const sizeNum = Math.min(100, Math.max(1, Number(pageSize) || 20));
+    const skip = (pageNum - 1) * sizeNum;
+
+    const where: any = { instructorId };
+
+    if (status) {
+      where.status = status;
+    }
+
+    if (from || to) {
+      where.startTime = {};
+      if (from) where.startTime.gte = new Date(`${from}T00:00:00.000Z`);
+      if (to) where.startTime.lte = new Date(`${to}T23:59:59.999Z`);
+    }
+
+    const [lessons, total] = await Promise.all([
+      prisma.lesson.findMany({
+        where,
+        include,
+        orderBy: { startTime: "asc" },
+        skip,
+        take: sizeNum,
+      }),
+      prisma.lesson.count({ where }),
+    ]);
+
+    res.status(200).json({
+      success: true,
+      data: lessons,
+      pagination: {
+        page: pageNum,
+        pageSize: sizeNum,
+        total,
+        totalPages: Math.ceil(total / sizeNum),
+        hasNextPage: pageNum * sizeNum < total,
+      },
+    });
+  } catch (error) {
+    console.error("Error fetching lessons by instructor id:", error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
 // const getLessonsByUserEmail = async (req: Request<{ email: string }>, res: Response) => {
 //   try {
 //     const lessons = await prisma.lesson.findMany({
@@ -239,6 +297,7 @@ export default {
   getLessonById,
   getLessonsByStudentId,
   getLessonsByInstructorId,
+  getRecentApprovedLessonsByInstructorId,
   // getLessonsByUserEmail,
   getLessonsByStatus,
   createLesson,

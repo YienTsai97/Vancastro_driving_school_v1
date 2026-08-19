@@ -23,11 +23,14 @@ export const protectedRouter = Router();
 // middleware
 protectedRouter.use(clerkMiddleware());
 
-protectedRouter.use(async (req: Request, res: Response, next: NextFunction) => {
-  // need to check if the user is validated
-  const userId = req.auth.userId;
+protectedRouter.use((req: Request, res: Response, next: NextFunction) => {
+  const auth = req.auth as AuthObject;
+  const isUserSession =
+    auth.tokenType === 'session_token' &&
+    auth.isAuthenticated &&
+    Boolean(auth.userId);
 
-  if (!userId) {
+  if (!isUserSession) {
     res.status(401).json({ success: false, message: 'Clerk Unauthorized' });
     return;
   }

@@ -34,10 +34,9 @@ export default function Calendar({ lessons }: Props) {
   const [open, setOpen] = useState<boolean>(false);
   const [lesson, setLesson] = useState<EventImpl | undefined>(undefined);
   const [showGrid, setShowGrid] = useState<string>("dayGridMonth")
-  const [allInstructors, setAllInstructors] = useState<(InstructorSelectType | undefined)[]>([])
   const [selectedInstructors, setSelectedInstructors] = useState<(InstructorSelectType | undefined)[]>([])
   const [selectDate, setSelectDate] = useState<string>("")
-  const calendarRef = useRef<any>(null)
+  const calendarRef = useRef<FullCalendar | null>(null)
   const isMobile = useIsMobile()
 
   useEffect(() => {
@@ -46,7 +45,6 @@ export default function Calendar({ lessons }: Props) {
       instructorId: lesson.instructorId,
       firstName: lesson.instructor?.firstName || ""
     })));
-    setAllInstructors(() => instructors)
     setSelectedInstructors(() => instructors)
   }, [lessons])
 

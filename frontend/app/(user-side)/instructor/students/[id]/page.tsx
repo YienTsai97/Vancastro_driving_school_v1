@@ -59,7 +59,7 @@ export default async function StudentDetail({ params }: Props) {
   }
   const lessons: LessonType[] = lessonsRes.data || [];
 
-  let lessonStatusData: LessonStatusDataType = {
+  const lessonStatusData: LessonStatusDataType = {
     60: {
       booking: 0,
       finished: 0,

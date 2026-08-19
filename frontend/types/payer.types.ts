@@ -17,7 +17,7 @@ export type PayerType = {
   updatedAt: Date;
 };
 
-export type QbCustomerType = any;
+export type QbCustomerType = Record<string, unknown>;
 
 export type PayerRequestData = {
   userId: number;

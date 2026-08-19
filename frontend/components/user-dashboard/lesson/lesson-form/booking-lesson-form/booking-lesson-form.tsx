@@ -99,8 +99,8 @@ export default function BookingLessonForm({
     e.preventDefault();
     const response = await createLesson({
       ...newLesson,
-      startTime: new Date(newLesson.startTime).toISOString(),
-      endTime: new Date(newLesson.endTime).toISOString(),
+      startTime: new Date(newLesson.startTime.replace(",", "T")).toISOString(),
+      endTime: new Date(newLesson.endTime.replace(",", "T")).toISOString(),
     });
     if (response) {
       console.log("success create lesson", response);
@@ -130,12 +130,19 @@ export default function BookingLessonForm({
   //// 1. lesson length change (availability[] already being filtered)
   //// 2. select the startTime
   useEffect(() => {
-    if (!newLesson.startTime) return;
+    if (!newLesson.startTime || !lessonLength) return;
+    const timePart = newLesson.startTime.includes(",")
+      ? newLesson.startTime.split(",")[1]
+      : newLesson.startTime;
+    const datePart = newLesson.startTime.includes(",")
+      ? newLesson.startTime.split(",")[0]
+      : "";
+    const endTimePart = getEndTime(timePart, lessonLength);
     setNewLesson((prevState) => ({
       ...prevState,
-      endTime: getEndTime(newLesson.startTime, length),
+      endTime: datePart ? `${datePart},${endTimePart}` : endTimePart,
     }));
-  }, [lessonLength]);
+  }, [lessonLength, newLesson.startTime]);
 
   useEffect(() => {
     const location = newLesson.location;
@@ -143,7 +150,7 @@ export default function BookingLessonForm({
       (data) => data.location1 === location || data.location2 === location
     );
     setSelectedTravelTimes(() => matchedData);
-  }, [newLesson.location]);
+  }, [newLesson.location, travelTimes]);
 
   useEffect(() => {
     console.log(newLesson);
@@ -151,29 +158,31 @@ export default function BookingLessonForm({
 
   if (initialNewLessonState.invoiceId === 0) {
     return (
-      <div className='flex justify-center items-center h-full'>
-        <p className='text-gray-500'>Please purchase a lesson first.</p>
+      <div className='rounded-2xl border border-gray-200 bg-[#EDEFEC] px-6 py-10 text-center'>
+        <p className='font-bold tracking-tight text-black'>Please purchase a lesson first.</p>
       </div>
     );
   }
+
+  const fieldClassName =
+    "w-full h-11 rounded-full border border-gray-200 bg-white px-5 text-sm font-semibold text-black shadow-sm outline-none transition-colors hover:text-black focus:border-black focus:bg-[#EDEFEC]";
 
   return (
     <div>
       <form
         onSubmit={handleSubmit}
-        className='lesson-form flex flex-col gap-[25px] md:gap-[20px] px-[15px] py-[20px] lg:px-[36px] lg:py-[24px]  border-gray-500 border-[2px] rounded-2xl  h-full w-max max-w-[500px]'
+        className='lesson-form flex w-full flex-col gap-6 rounded-2xl border border-gray-200 bg-white px-5 py-6 lg:px-8 lg:py-8'
       >
-        {/* Select Class */}
-        <div className='flex flex-col gap-[6px]'>
-          <label>
+        <div className='flex flex-col gap-2'>
+          <label htmlFor='lessonType' className='font-bold tracking-tight text-black'>
             Select class
-            {/* ({lessonLength}) */}
           </label>
           <select
             name='lessonType'
             id='lessonType'
             defaultValue={""}
             onChange={(e) => handleLessonLength(e)}
+            className={fieldClassName}
             required
           >
             <option value='' className='text-gray-500' disabled>
@@ -187,22 +196,29 @@ export default function BookingLessonForm({
           </select>
         </div>
 
-        {/* Select Instructor */}
-        <InstructorSelector
-          instructorId={newLesson.instructorId}
-          instructors={instructors}
-          handleChange={handleChange}
-          isAddingAvailability={true}
-        />
+        <div className='flex flex-col gap-2'>
+          <label htmlFor='instructor' className='font-bold tracking-tight text-black'>
+            Select instructor
+          </label>
+          <InstructorSelector
+            instructorId={newLesson.instructorId}
+            instructors={instructors}
+            handleChange={handleChange}
+            isAddingAvailability={true}
+            selectClassName={fieldClassName}
+          />
+        </div>
 
-        {/* Select Location */}
-        <div className='flex flex-col gap-[6px]'>
-          <label>Select Location</label>
+        <div className='flex flex-col gap-2'>
+          <label htmlFor='location' className='font-bold tracking-tight text-black'>
+            Select location
+          </label>
           <select
             name='location'
             id='location'
             value={newLesson.location}
             onChange={handleChange}
+            className={fieldClassName}
             required
           >
             <option value='' className='text-gray-500' disabled>
@@ -216,7 +232,6 @@ export default function BookingLessonForm({
           </select>
         </div>
 
-        {/* Select Date Time */}
         <SelectDateTime
           dateSelectable={dateSelectable}
           selectedAvailability={localSelectAvailability()}
@@ -228,7 +243,7 @@ export default function BookingLessonForm({
         />
         <Button
           type='submit'
-          className='bg-[#FFCE47] text-black  lg:bg-[#333333] lg:text-[#FFF5D8] hover:bg-[#FFF5D8] lg:hover:bg-[#4e4330] text-[20px] font-bold w-full  h-[35px] lg:h-[45px]'
+          className='h-12 w-full rounded-full bg-[#FFCE47] text-base font-bold text-black hover:bg-[#f7c948]'
         >
           Submit
         </Button>

@@ -31,7 +31,7 @@ export type InvoiceType = {
   invoiceTransactions: TransactionType[];
 };
 
-export type QbInvoiceType = any;
+export type QbInvoiceType = Record<string, unknown>;
 
 export interface InvoiceResponseData {
   dbInvoice: InvoiceType;

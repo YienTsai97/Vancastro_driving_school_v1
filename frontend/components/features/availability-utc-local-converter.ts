@@ -39,7 +39,7 @@ export function convertToUTC(data: AvailabilityType, timezone: string) {
   for (const date in data) {
     for (const [start, end] of data[date]) {
       const localDate = moment.tz(`${date} ${start}`, "YYYY-MM-DD HH:mm", tz);
-      let localEndDate = moment.tz(`${date} ${end}`, "YYYY-MM-DD HH:mm", tz);
+      const localEndDate = moment.tz(`${date} ${end}`, "YYYY-MM-DD HH:mm", tz);
 
       //If the end time is earlier than the start time, it means the time range spans into the next day.
       if (localEndDate.isBefore(localDate)) {

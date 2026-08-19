@@ -13,11 +13,7 @@ import {
 import { LogIn } from "lucide-react";
 import { useEffect, useState } from 'react';
 
-type Prop = {
-  userRole: string
-}
-
-export function HeaderUser({ userRole }: Prop) {
+export function HeaderUser() {
   const [isMounted, setIsMounted] = useState(false);
   const { user } = useUser();
 

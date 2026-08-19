@@ -30,9 +30,9 @@ const getPayerById = async (req: Request, res: Response) => {
     // Fetch the payer by id
     const qbo = await getQbo(tokenData.accessToken, tokenData.refreshToken);
     const quickBooksCustomer = await new Promise((resolve, reject) => {
-      qbo.getCustomer(dbPayer.qbCustomerId, (error: Error, response: any) => {
+      qbo.getCustomer(dbPayer.qbCustomerId, (error: any, response: any) => {
         if (error) {
-          console.error("QuickBooks API Error:", error);
+          console.error("QuickBooks API Error:", error?.response?.data?.Fault || error?.message || error);
           reject(error);
         } else resolve(response);
       });
@@ -130,9 +130,9 @@ const createPayer = async (req: Request, res: Response) => {
     // Create the customer in QuickBooks
     const qbo = await getQbo(tokenData.accessToken, tokenData.refreshToken);
     quickBooksCustomer = await new Promise((resolve, reject) => {
-      qbo.createCustomer(requestData, (error: Error, response: any) => {
+      qbo.createCustomer(requestData, (error: any, response: any) => {
         if (error) {
-          console.error("QuickBooks API Error:", error);
+          console.error("QuickBooks API Error:", error?.response?.data?.Fault || error?.message || error);
           reject(error);
         } else resolve(response);
       });
@@ -178,9 +178,9 @@ const createPayer = async (req: Request, res: Response) => {
             Id: quickBooksCustomer.Id,
             SyncToken: quickBooksCustomer.SyncToken,
           },
-          (error: Error, response: any) => {
+          (error: any, response: any) => {
             if (error) {
-              console.error("QuickBooks API Error:", error);
+              console.error("QuickBooks API Error:", error?.response?.data?.Fault || error?.message || error);
               return;
             }
             return response;

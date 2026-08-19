@@ -1,6 +1,7 @@
 "use client"
 
 import LessonCard from '@/components/user-dashboard/lesson/lesson-card';
+import { toast } from '@/hooks/use-toast';
 import { LessonStatus } from '@/types/lesson.type';
 import { getLessons, updateLesson } from '@/utils/lessonFetch';
 import { useEffect, useState } from 'react';
@@ -40,7 +41,7 @@ const BookingRequest = () => {
     e: React.FormEvent,
     lessonId: number,
     status: LessonStatus
-  ) => {
+  ): Promise<{ success: boolean; message?: string }> => {
     e.preventDefault();
     try {
       const lessonData = { status };
@@ -58,18 +59,37 @@ const BookingRequest = () => {
       } else {
         console.error(`Error updating lesson:`, res.message);
       }
+      return { success: res.success, message: res.message };
     } catch (error) {
       console.error("Error in handleLessonUpdate:", error);
+      return { success: false, message: "Unexpected error" };
     }
   };
 
-  const handleAccept = (lessonId: number) => (e: React.FormEvent) => {
-    handleLessonUpdate(e, lessonId, LessonStatus.APPROVED);
+  const handleAccept = (lessonId: number) => async (e: React.FormEvent) => {
+    await handleLessonUpdate(e, lessonId, LessonStatus.APPROVED);
     mutate(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/lessons/status/pending`);
   }
 
-  const handleDecline = (lessonId: number) => (e: React.FormEvent) =>
-    handleLessonUpdate(e, lessonId, LessonStatus.CANCELLED);
+  const handleDecline = (lessonId: number) => async (e: React.FormEvent) => {
+    const confirmed = confirm("Are you sure?")
+    if (!confirmed) return;
+    const update = await handleLessonUpdate(e, lessonId, LessonStatus.CANCELLED);
+    if (update.success) {
+      toast({
+        title: "Success",
+        description: "Lesson cancelled successfully",
+        variant: "success",
+      });
+      mutate(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/lessons/status/pending`);
+    } else {
+      toast({
+        title: "Error",
+        description: update.message || "Failed to cancel lesson",
+        variant: "destructive",
+      });
+    }
+  }
 
   const filteredLessons = lessons.filter(lesson => {
     if (filter === 'ALL') return true;
@@ -84,7 +104,6 @@ const BookingRequest = () => {
 
   return (
     <div className="w-full flex flex-col my-5 border-b border-gray-200 m-6">
-      {/* フィルタータブ */}
       <div className="flex flex-row space-x-2 font-medium" >
         <button
           onClick={() => setFilter('PENDING')}
@@ -93,8 +112,8 @@ const BookingRequest = () => {
           Pending
         </button>
         <button
-          onClick={() => setFilter('CANCELED')}
-          className={`pb-2 px-4  transition-all ease-in-out duration-150 ${filter === 'CANCELED' ? 'border-b-2 border-black ext-black' : 'text-gray-400'}`}
+          onClick={() => setFilter('CANCELLED')}
+          className={`pb-2 px-4  transition-all ease-in-out duration-150 ${filter === 'CANCELLED' ? 'border-b-2 border-black ext-black' : 'text-gray-400'}`}
         >
           Declined
         </button>

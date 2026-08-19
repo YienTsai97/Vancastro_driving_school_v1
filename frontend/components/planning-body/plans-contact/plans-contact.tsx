@@ -27,10 +27,10 @@ export const PlansContact = () => {
           <div className="flex flex-col gap-[26px] px-[74px] md:px-0">
             <div>
               <h3 className="text-[20px] font-medium  lg:text-[26px] xl:text-[36px] xl:font-bold">
-                We're Here to Help
+                We&apos;re Here to Help
               </h3>
               <h3 className="text-[30px] lg:text-[36px] font-bold">
-                Let's Customize Your Driving Plan!
+                Let&apos;s Customize Your Driving Plan!
               </h3>
             </div>
             <div>
@@ -143,7 +143,7 @@ export const PlansContact = () => {
           </div>
         </div>
         <h6 className="bg-white text-[20px] font-bold text-center lg:invisible px-[16px] pt-[30px] pb-[22px] lg:pb-0 lg:pt-0 lg:px-0 w-screen lg:w-0">
-          We're happy to hear from you !
+          We&apos;re happy to hear from you !
         </h6>
         <div className="bg-[#ffffff] lg:bg-[#FFF5D8] px-[16px] sm:px-[90px] lg:px-0 pb-[30px] lg:pb-0 w-full self-center">
           <ContactForm />

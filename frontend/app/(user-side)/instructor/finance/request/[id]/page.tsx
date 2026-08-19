@@ -8,7 +8,7 @@ type Props = {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }
 
-export default async function Page({ params }: Props): Promise<any> {
+export default async function Page({ params }: Props) {
   const { id } = await params;
   const purchaseId = Number(id);
   if (!purchaseId) {
@@ -21,7 +21,6 @@ export default async function Page({ params }: Props): Promise<any> {
   }
   const purchase = res.data as PurchaseType;
 
-  console.log("Purchase:", purchase);
   const payer = await getDbPayerById(purchase.payerId);
   const payerName = `${payer.data?.firstName} ${payer.data?.lastName}`;
   return (

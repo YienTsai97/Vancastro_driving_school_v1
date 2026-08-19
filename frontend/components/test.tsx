@@ -1,16 +1,31 @@
 "use client"
 
+type QuickBooksItem = {
+  Id: string;
+  Name: string;
+  Description?: string;
+  UnitPrice?: number;
+  Type: string;
+  Active: boolean;
+};
+
+type QuickBooksItemsResponse = {
+  QueryResponse: {
+    Item: QuickBooksItem[];
+  };
+};
+
 export default function test({data}:{
-  data:any
+  data: QuickBooksItemsResponse
 } ) {
 
 // console.log(data.QueryResponse.Item)
 
-const activeItems = data.QueryResponse.Item.filter((item: any) => item.Active === true && item.Type === "Service");
+const activeItems = data.QueryResponse.Item.filter((item) => item.Active === true && item.Type === "Service");
 console.log("Active Items:", activeItems);
   return (
     <div>
-      {activeItems.map((item: any) => (
+      {activeItems.map((item) => (
         <div key={item.Id} className="p-4 border-b border-gray-200">
           <p>{item.Id}</p>
           <h3 className="text-lg font-semibold">{item.Name}</h3>

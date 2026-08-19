@@ -88,9 +88,9 @@ const getInvoiceById = async (req: Request, res: Response) => {
     // Fetch invoice by id from QuickBooks
     const qbo = await getQbo(tokenData.accessToken, tokenData.refreshToken);
     const quickBooksInvoice = await new Promise((resolve, reject) => {
-      qbo.getInvoice(dbInvoice.qbInvoiceId, (error: Error, response: any) => {
+      qbo.getInvoice(dbInvoice.qbInvoiceId, (error: any, response: any) => {
         if (error) {
-          console.error("QuickBooks API Error:", error);
+          console.error("QuickBooks API Error:", error?.response?.data?.Fault || error?.message || error);
           reject(error);
         } else resolve(response);
       });
@@ -188,9 +188,8 @@ const createInvoice = async (req: Request, res: Response) => {
     if (!purchase.payer.qbCustomerId) {
       const qbo = await getQbo(tokenData.accessToken, tokenData.refreshToken);
       const customerData = {
-        DisplayName: `${purchase.payer.firstName} ${
-          purchase.payer.lastName
-        } - #${Date.now() + Math.floor(Math.random() * 1000)}`,
+        DisplayName: `${purchase.payer.firstName} ${purchase.payer.lastName
+          } - #${Date.now() + Math.floor(Math.random() * 1000)}`,
         GivenName: purchase.payer.firstName,
         FamilyName: purchase.payer.lastName,
         PrimaryPhone: {
@@ -201,9 +200,9 @@ const createInvoice = async (req: Request, res: Response) => {
         },
       };
       const customer = (await new Promise((resolve, reject) => {
-        qbo.createCustomer(customerData, (error: Error, response: any) => {
+        qbo.createCustomer(customerData, (error: any, response: any) => {
           if (error) {
-            console.error("QuickBooks API Error:", error);
+            console.error("QuickBooks API Error:", error?.response?.data?.Fault || error?.message || error);
             reject(error);
           } else resolve(response);
         });
@@ -252,17 +251,16 @@ const createInvoice = async (req: Request, res: Response) => {
               tokenData.refreshToken
             );
             const serviceItemData = {
-              Name: `${lessonType.licenseClass.replace("_", " ")} ${
-                lessonType.lessonName
-              }`,
+              Name: `${lessonType.licenseClass.replace("_", " ")} ${lessonType.lessonName
+                }`,
               Type: "Service",
-              IncomeAccountRef: { value: "79" },
+              IncomeAccountRef: { value: process.env.QUICKBOOKS_INCOME_ACCOUNT_ID || "79" },
               UnitPrice: lessonType.price,
             };
             const serviceItem = (await new Promise((resolve, reject) => {
-              qbo.createItem(serviceItemData, (error: Error, response: any) => {
+              qbo.createItem(serviceItemData, (error: any, response: any) => {
                 if (error) {
-                  console.error("QuickBooks API Error:", error);
+                  console.error("QuickBooks API Error:", error?.response?.data?.Fault || error?.message || error);
                   reject(error);
                 } else {
                   resolve(response);
@@ -298,7 +296,7 @@ const createInvoice = async (req: Request, res: Response) => {
             ItemRef: {
               value: item.qbServiceId,
             },
-            TaxCodeRef: { value: "3" }, // Example tax code
+            TaxCodeRef: { value: "NON" }, // Example tax code
             Qty: item.quantity,
             UnitPrice: item.amount, // single unit price
           },
@@ -307,23 +305,23 @@ const createInvoice = async (req: Request, res: Response) => {
         // Add discount only if greater than 0
         ...(discountPercent > 0
           ? [
-              {
-                DetailType: "DiscountLineDetail",
-                DiscountLineDetail: {
-                  DiscountAccountRef: { value: "87" }, // Sales Discounts Account
-                  PercentBased: true,
-                  DiscountPercent: discountPercent,
-                },
+            {
+              DetailType: "DiscountLineDetail",
+              DiscountLineDetail: {
+                DiscountAccountRef: { value: process.env.QUICKBOOKS_DISCOUNT_ACCOUNT_ID || "87" },
+                PercentBased: true,
+                DiscountPercent: discountPercent,
               },
-            ]
+            },
+          ]
           : []),
       ],
       CustomerRef: {
         value: qbCustomerIdToUse, // Replace with a valid Customer ID from QuickBooks
       },
-      TxnTaxDetail: {
-        TxnTaxCodeRef: { value: "3" }, // Ensure this tax code exists
-      },
+      // TxnTaxDetail: {
+      //   TxnTaxCodeRef: { value: "NON" }, // Ensure this tax code exists
+      // },
       DocNumber: invoiceNumber,
       DueDate: dueDate,
     };
@@ -331,9 +329,9 @@ const createInvoice = async (req: Request, res: Response) => {
     // Create invoice in QuickBooks
     const qbo = await getQbo(tokenData.accessToken, tokenData.refreshToken);
     quickBooksInvoice = await new Promise((resolve, reject) => {
-      qbo.createInvoice(requestData, (error: Error, response: any) => {
+      qbo.createInvoice(requestData, (error: any, response: any) => {
         if (error) {
-          console.error("QuickBooks API Error:", error);
+          console.error("QuickBooks API Error:", error?.response?.data?.Fault || error?.message || error);
           reject(error);
         } else resolve(response);
       });
@@ -363,36 +361,36 @@ const createInvoice = async (req: Request, res: Response) => {
         dbInvoice: dbInvoice,
       },
     });
-  } catch (error) {
-    console.error("Error creating invoice", error);
+  } catch (error: any) {
+    const faultMessage =
+      error?.response?.data?.Fault?.Error?.[0]?.Message ||
+      error?.response?.data?.Fault?.Error?.[0]?.Detail ||
+      error?.message ||
+      "Internal server error";
+    console.error("Error creating invoice:", faultMessage);
 
     // Rollback QuickBooks Invoice if Prisma fails
     if (quickBooksInvoice) {
       console.log(`Rolling back QuickBooks Invoice`);
 
       try {
-        // Start to delete the QuickBooks invoice
         const tokenData = await ensureQuickBooksAuthorization(req, res);
         if (!tokenData) return;
 
-        // Delete the QuickBooks invoice
         const qbo = await getQbo(tokenData.accessToken, tokenData.refreshToken);
         qbo.deleteInvoice(
           { Id: quickBooksInvoice.Id, SyncToken: quickBooksInvoice.SyncToken },
-          (error: Error, response: any) => {
-            if (error) {
-              console.error("QuickBooks API Error:", error);
-              return;
-            }
-            return response;
+          (err: any) => {
+            if (err) console.error("Rollback failed:", err.message);
           }
         );
-      } catch (deleteError) {
-        console.error(`Failed to delete QuickBooks invoice:`, deleteError);
+      } catch (deleteError: any) {
+        console.error("Rollback failed:", deleteError.message);
       }
     }
 
-    res.status(500).json({ success: false, message: "Internal server error" });
+    const statusCode = error?.response?.status === 400 ? 400 : 500;
+    res.status(statusCode).json({ success: false, message: faultMessage });
   }
 };
 
@@ -485,7 +483,7 @@ const editInvoice = async (req: Request, res: Response) => {
       // Check if the invoice exists
       const qbo = await getQbo(tokenData.accessToken, tokenData.refreshToken);
       const existInvoice = (await new Promise((resolve, reject) => {
-        qbo.getInvoice(dbInvoice.qbInvoiceId, (error: Error, response: any) => {
+        qbo.getInvoice(dbInvoice.qbInvoiceId, (error: any, response: any) => {
           if (error) {
             console.error("QuickBooks API Error (Fetching):", error);
             reject(error);
@@ -515,28 +513,28 @@ const editInvoice = async (req: Request, res: Response) => {
               ItemRef: {
                 value: itemRefValue, // Replace with a valid Item ID from QuickBooks
               },
-              TaxCodeRef: { value: "3" }, // Replace with a valid Tax Code ID
+              TaxCodeRef: { value: "NON" }, // Replace with a valid Tax Code ID
             },
           },
 
           // Update discount if exists
           ...(discountPercent && discountPercent >= 0
             ? [
-                {
-                  DetailType: "DiscountLineDetail",
-                  DiscountLineDetail: {
-                    DiscountAccountRef: { value: "87" }, // Sales Discounts Account
-                    PercentBased: true,
-                    DiscountPercent: discountPercent,
-                  },
+              {
+                DetailType: "DiscountLineDetail",
+                DiscountLineDetail: {
+                  DiscountAccountRef: { value: process.env.QUICKBOOKS_DISCOUNT_ACCOUNT_ID || "87" },
+                  PercentBased: true,
+                  DiscountPercent: discountPercent,
                 },
-              ]
+              },
+            ]
             : existInvoice.Line?.[2]
-            ? [
+              ? [
                 {
                   DetailType: "DiscountLineDetail",
                   DiscountLineDetail: {
-                    DiscountAccountRef: { value: "87" }, // Sales Discounts Account
+                    DiscountAccountRef: { value: process.env.QUICKBOOKS_DISCOUNT_ACCOUNT_ID || "87" },
                     PercentBased: true,
                     DiscountPercent:
                       existInvoice.Line?.[2]?.DiscountLineDetail
@@ -544,20 +542,20 @@ const editInvoice = async (req: Request, res: Response) => {
                   },
                 },
               ]
-            : []),
+              : []),
         ],
-        TxnTaxDetail: {
-          TxnTaxCodeRef: { value: "3" }, // Ensure this tax code exists
-        },
+        // TxnTaxDetail: {
+        //   TxnTaxCodeRef: { value: "NON" }, // Ensure this tax code exists
+        // },
         DueDate: dueDate || existInvoice.DueDate,
         DocNumber: existInvoice.DocNumber,
       };
 
       // Update lesson in QuickBooks
       const quickBooksInvoice = await new Promise((resolve, reject) => {
-        qbo.updateInvoice(requestData, (error: Error, response: any) => {
+        qbo.updateInvoice(requestData, (error: any, response: any) => {
           if (error) {
-            console.error("QuickBooks API Error:", error);
+            console.error("QuickBooks API Error:", error?.response?.data?.Fault || error?.message || error);
             reject(error);
           }
           resolve(response);
@@ -602,9 +600,9 @@ const deleteInvoice = async (req: Request, res: Response) => {
       const existInvoice = (await new Promise((resolve, reject) => {
         qbo.getInvoice(
           deletedInvoice.qbInvoiceId,
-          (error: Error, response: any) => {
+          (error: any, response: any) => {
             if (error) {
-              console.error("QuickBooks API Error:", error);
+              console.error("QuickBooks API Error:", error?.response?.data?.Fault || error?.message || error);
               reject(error);
             } else resolve(response);
           }
@@ -624,9 +622,9 @@ const deleteInvoice = async (req: Request, res: Response) => {
             Id: deletedInvoice.qbInvoiceId,
             SyncToken: existInvoice.SyncToken,
           },
-          (error: Error, response: any) => {
+          (error: any, response: any) => {
             if (error) {
-              console.error("QuickBooks API Error:", error);
+              console.error("QuickBooks API Error:", error?.response?.data?.Fault || error?.message || error);
               reject(error);
             } else resolve(response);
           }

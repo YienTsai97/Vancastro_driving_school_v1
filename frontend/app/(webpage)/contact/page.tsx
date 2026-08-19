@@ -22,7 +22,7 @@ export default function Contact() {
         </h1>
         <div className="text-[14px] md:text-[18px] lg:text-[24px] font-medium text-[#D9D9D9]">
           <h5>Your trusted partner in driving education since 2020.</h5>
-          <h5>We're committed to creating safe and confident drivers.</h5>
+          <h5>We&apos;re committed to creating safe and confident drivers.</h5>
         </div>
       </div>
       {/* Our Story */}
@@ -250,7 +250,7 @@ export default function Contact() {
           <h2>Let us know !</h2>
         </div>
         <h3 className="md:hidden text-[18px] text-[#2F2F2F] font-bold text-center">
-          We're happy to hear from you !
+          We&apos;re happy to hear from you !
         </h3>
         <div className=" max-w-[630px] w-full">
           <ContactForm />

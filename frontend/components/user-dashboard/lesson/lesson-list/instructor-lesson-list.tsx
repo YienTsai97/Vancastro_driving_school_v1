@@ -13,6 +13,7 @@ type Props = {
 };
 
 export default function InstructorLessonList({ lessons }: Props) {
+
   return (
     <div className="w-full">
       {!lessons ? (
@@ -58,7 +59,6 @@ export default function InstructorLessonList({ lessons }: Props) {
                   <p>
                     Status: <strong className="">{lesson.status}</strong>
                   </p>
-                  <Button className="w-fit self-end">Cancel the Lesson</Button>
                 </div>
               </AccordionContent>
             </AccordionItem>

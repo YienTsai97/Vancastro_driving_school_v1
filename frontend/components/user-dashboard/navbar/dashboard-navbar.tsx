@@ -57,7 +57,7 @@ export default function DashboardNavBar({ userName, userRole, userContractId }: 
           </SidebarHeader>
           <SidebarContent className="w-full px-3 py-1 gap-0">
             <div className="px-4 py-5 flex gap-3 items-center">
-              <HeaderUser userRole={userRole} />
+              <HeaderUser />
               <p className="text-[18px] font-medium">{userName}</p>
             </div>
             <div className=" text-[#777777] flex flex-col w-full text-[15px]">

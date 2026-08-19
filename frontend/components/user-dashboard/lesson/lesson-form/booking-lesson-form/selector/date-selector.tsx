@@ -80,17 +80,22 @@ export const DateSelector = ({ dateSelectable, selectDate, handleSelectDate }: P
       (entries) => callbackEntries(entries),
       options
     )
-    dateRefs.current.forEach((el) => el && observer.observe(el))
+    const observedElements = dateRefs.current.filter(
+      (element): element is HTMLButtonElement => element !== null
+    )
+    observedElements.forEach((element) => observer.observe(element))
 
     return (() => {
-      dateRefs.current.forEach((el) => el && observer.observe(el))
+      observedElements.forEach((element) => observer.unobserve(element))
     })
   }, [visibleRange])
 
   return (
     <>
-      <p className="w-full text-center font-semibold">
-        {visibleRange.from} ~ {visibleRange.to}
+      <p className="w-full text-center text-sm font-semibold text-[#777777]">
+        {visibleRange.from && visibleRange.to
+          ? `${visibleRange.from} ~ ${visibleRange.to}`
+          : "Scroll to pick a date"}
       </p>
       <Carousel
         opts={{
@@ -109,17 +114,22 @@ export const DateSelector = ({ dateSelectable, selectDate, handleSelectDate }: P
                   data-date={formattoLocalDate(date)}
                   ref={(el) => { dateRefs.current[index] = el; }}
                   onClick={() => handleSelectDate(date)}
-                  className={`
-                    ${selectDate === formattoLocalDate(date) ? "text-yellow-600" : ""}
-                    size-fit`}
+                  className={`h-auto w-fit px-2 py-2 hover:text-black ${
+                    selectDate === formattoLocalDate(date)
+                      ? "font-bold text-black"
+                      : "font-semibold text-[#777777]"
+                  }`}
                   disabled={dateSelectable(formattoLocalDate(date)) ? false : true}
                 >
                   <div className="flex flex-col gap-1 text-center ">
-                    <p>{Intl.DateTimeFormat("en-CA", { weekday: "short" }).format(date)}</p>
+                    <p className="text-xs tracking-tight">
+                      {Intl.DateTimeFormat("en-CA", { weekday: "short" }).format(date)}
+                    </p>
                     <div className={`
-                      ${selectDate === formattoLocalDate(date) ? "border-[2px] border-yellow-600" : ""}
-                      ${dateSelectable(formattoLocalDate(date)) ? "" : "border-[2px] bg-gray-100"}
-                      size-[40px] rounded-xl justify-center items-center flex`}>
+                      flex size-10 items-center justify-center rounded-full
+                      ${selectDate === formattoLocalDate(date) ? "bg-[#EDEFEC] font-bold text-black" : ""}
+                      ${dateSelectable(formattoLocalDate(date)) ? "" : "bg-gray-100 text-gray-400"}
+                    `}>
                       <p>{formattoLocalDate(date).split("-")[2]}</p>
                     </div>
                   </div>
