@@ -1,16 +1,17 @@
 import { AvailabilityType } from "@/types/time.type";
 import moment from "moment-timezone";
 
-export const SCHOOL_TIMEZONE = "America/Vancouver";
-
 function resolveTimezone(timezone: string) {
-  if (timezone === "local") return SCHOOL_TIMEZONE;
+  if (timezone === "local") {
+    return Intl.DateTimeFormat().resolvedOptions().timeZone;
+  }
   return timezone;
 }
 
 //UTC → Local
 ////  From: [{ start:"ISOString" ,end:"ISOString"}]
 ////  To: {"YYYY-MM-DD": [["HH:mm", "HH:mm"]]}
+// Call this from the browser only. Server "local" is UTC and will shift demo times.
 export function convertToLocal(data: { start: string; end: string }[], timezone: string) {
   const tz = resolveTimezone(timezone);
   const result: AvailabilityType = {};

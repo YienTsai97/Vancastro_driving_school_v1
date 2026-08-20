@@ -1,5 +1,5 @@
 "use client";
-import { convertToUTC } from "@/components/features/availability-utc-local-converter";
+import { convertToLocal, convertToUTC } from "@/components/features/availability-utc-local-converter";
 import { formattoLocalDate } from "@/components/features/date-input-select-check";
 import { Button } from "@/components/ui/button";
 import {
@@ -25,7 +25,7 @@ import { updateUser } from "@/utils/userFetch";
 import plus from "@assets/dashboard/plus.svg";
 import { ChevronLeft } from "lucide-react";
 import Image from "next/image";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { InstructorSelector } from "../global-selector/instructor-selector";
 import AvailabilityList from "./availability-list";
 import DateRangeSelector from "./selector/date-range-selector";
@@ -38,6 +38,14 @@ type Props = {
 };
 
 export const AvailabilityForm = ({ instructors, availabilities }: Props) => {
+  const localAvailabilities = useMemo(
+    () =>
+      availabilities.map((item) => ({
+        id: item.id,
+        availability: convertToLocal(item.utcSlots, "local"),
+      })),
+    [availabilities]
+  );
   //Add button
   const [isAdding, setIsAdding] = useState<boolean>(false);
   //Instructor Select
@@ -51,7 +59,7 @@ export const AvailabilityForm = ({ instructors, availabilities }: Props) => {
   // Get Existing Data (local time availability)
   const [availability, setAvailability] = useState<AvailabilityType>({});
   const selectedLocalAv =
-    availabilities.find((availability) => availability.id === instructorId)
+    localAvailabilities.find((availability) => availability.id === instructorId)
       ?.availability || {};
 
   // Date selection
@@ -69,10 +77,10 @@ export const AvailabilityForm = ({ instructors, availabilities }: Props) => {
   useEffect(() => {
     if (!instructorId) return;
     const selectedAvailability =
-      availabilities.find((availability) => availability.id === instructorId)
+      localAvailabilities.find((availability) => availability.id === instructorId)
         ?.availability || {};
     setAvailability(() => selectedAvailability);
-  }, [instructorId, availabilities]);
+  }, [instructorId, localAvailabilities]);
 
   //Date(s) select
   const [isSelectedFromList, setIsSelectedFromList] = useState<boolean>(false);

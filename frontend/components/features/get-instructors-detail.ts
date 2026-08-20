@@ -1,23 +1,24 @@
 import { getInstructorsAvailabilityiesType, getInstructorsNameType } from "@/types/time.type";
 import { UserType } from "@/types/user.type";
-import { convertToLocal } from "./availability-utc-local-converter";
 
-export const getAllAvailabilities = (instructorData: UserType[]): getInstructorsAvailabilityiesType[] => {
-  const localAvailabilities: getInstructorsAvailabilityiesType[] = [];
+export const getAllAvailabilities = (
+  instructorData: UserType[]
+): getInstructorsAvailabilityiesType[] => {
+  const utcAvailabilities: getInstructorsAvailabilityiesType[] = [];
   if (!instructorData) return [];
-  //Get Availability array of each instructor
   instructorData.map((instructor: UserType) => {
-    const availabilityArray = Array.isArray(instructor.availability)
-      ? instructor.availability.map((slot: { [key: string]: string }) => ({ start: slot.start, end: slot.end }))
+    const utcSlots = Array.isArray(instructor.availability)
+      ? instructor.availability.map((slot: { [key: string]: string }) => ({
+          start: slot.start,
+          end: slot.end,
+        }))
       : [];
-    //Sort the time by UTC start time before conversion
-    const sortedAvailabilityArray = availabilityArray.sort(
-      (a, b) => new Date(a.start).getTime() - new Date(b.start).getTime())
-    //Convert UTC DB format to Local Frontend Format
-    const localAvailability = convertToLocal(sortedAvailabilityArray, "local");
-    localAvailabilities.push({ id: instructor.id, availability: localAvailability });
+    const sortedUtcSlots = utcSlots.sort(
+      (a, b) => new Date(a.start).getTime() - new Date(b.start).getTime()
+    );
+    utcAvailabilities.push({ id: instructor.id, utcSlots: sortedUtcSlots });
   });
-  return localAvailabilities;
+  return utcAvailabilities;
 }
 
 export const getInstructorsName = (instructorData: UserType[]): getInstructorsNameType[] => {

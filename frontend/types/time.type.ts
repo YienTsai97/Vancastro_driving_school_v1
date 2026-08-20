@@ -9,7 +9,7 @@ export type utcAvailabilityType = { start: string, end: string }[]
 
 export type getInstructorsAvailabilityiesType = {
   id: number
-  availability: AvailabilityType //-> goes to "dbAvailabilityType"
+  utcSlots: utcAvailabilityType
 }
 
 export type getInstructorsNameType = {

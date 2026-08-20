@@ -1,4 +1,5 @@
 "use client";
+import { convertToLocal } from "@/components/features/availability-utc-local-converter";
 import { formattoLocalDate } from "@/components/features/date-input-select-check";
 import { convertlessonFromUTCToLocal } from "@/components/features/lesson-utc-local-converter";
 import { getSelectableLocations } from "@/components/features/selectable-location";
@@ -15,7 +16,7 @@ import {
 } from "@/types/time.type";
 import { TravelTimeType } from "@/types/travelTime.type";
 import { createLesson } from "@/utils/lessonFetch";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import "../lesson-form.css";
 import { SelectDateTime } from "./selector/date-time-group";
 
@@ -45,9 +46,18 @@ export default function BookingLessonForm({
     initialNewLessonState
   );
 
+  const localAvailabilities = useMemo(
+    () =>
+      availabilities.map((item) => ({
+        id: item.id,
+        availability: convertToLocal(item.utcSlots, "local"),
+      })),
+    [availabilities]
+  );
+
   const localSelectAvailability = (): AvailabilityType | null => {
     const selectedLocalAv: AvailabilityType | null =
-      availabilities.find((item) => item.id === newLesson.instructorId)
+      localAvailabilities.find((item) => item.id === newLesson.instructorId)
         ?.availability ?? null;
     if (!selectedLocalAv) return null;
     return selectedLocalAv;

@@ -3,7 +3,6 @@ import { AvailabilityForm } from "@/components/user-dashboard/availability-form/
 import { getInstructorsAvailabilityiesType, getInstructorsNameType } from "@/types/time.type";
 import { getInstructors } from "@/utils/userFetch";
 
-// Define the correct type for InitialAvailabilityData
 export default async function InstructorAvailability() {
   const instructorsFullData = await getInstructors()
   const instructorsAvData = getAllAvailabilities(instructorsFullData) as getInstructorsAvailabilityiesType[]
@@ -25,5 +24,3 @@ export default async function InstructorAvailability() {
     </section >
   )
 }
-
-
