@@ -42,7 +42,7 @@ export default function TravelList({ rawData }: Props) {
       }
     })
     setTravelTimeData(() => filteredTravelTimeData)
-  }, [])
+  }, [rawData])
 
   //Submit create to travel (from-to & to-from)
   const handleSubmit = async (e: React.FormEvent) => {

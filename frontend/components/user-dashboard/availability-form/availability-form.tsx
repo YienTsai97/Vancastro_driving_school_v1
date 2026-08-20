@@ -25,7 +25,7 @@ import { updateUser } from "@/utils/userFetch";
 import plus from "@assets/dashboard/plus.svg";
 import { ChevronLeft } from "lucide-react";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { InstructorSelector } from "../global-selector/instructor-selector";
 import AvailabilityList from "./availability-list";
 import DateRangeSelector from "./selector/date-range-selector";
@@ -79,9 +79,13 @@ export const AvailabilityForm = ({ instructors, availabilities }: Props) => {
   const handleSelectedFromList = (state: boolean) => {
     setIsSelectedFromList(() => state);
   };
-  const handleDateRange = (startDate: string, endDate: string) => {
-    setDateRange(() => [startDate, endDate]);
-  };
+  const handleDateRange = useCallback((startDate: string, endDate: string) => {
+    setDateRange((currentRange) =>
+      currentRange[0] === startDate && currentRange[1] === endDate
+        ? currentRange
+        : [startDate, endDate]
+    );
+  }, []);
 
   // Handle day selection
   const handleSelectedDay = (newDays: (number | null)[]) => {
@@ -89,9 +93,9 @@ export const AvailabilityForm = ({ instructors, availabilities }: Props) => {
   };
 
   // Handle time selection
-  const handleSelectedTime = (newTimes: SubtractRangeType[]) => {
+  const handleSelectedTime = useCallback((newTimes: SubtractRangeType[]) => {
     setSelectTime(() => newTimes);
-  };
+  }, []);
 
   // Filter dates based on selected days
   useEffect(() => {
@@ -118,7 +122,7 @@ export const AvailabilityForm = ({ instructors, availabilities }: Props) => {
       start.setDate(start.getDate() + 1);
     }
     setSelectDates(() => tempRange);
-  }, [dateRange, selectedDays, isSingle]);
+  }, [dateRange, selectedDays, isSingle, isSelectedFromList]);
 
   //Combine Date Range and Time Range & OverWrite Availability[date]
   const overwriteSelectedtime = (): AvailabilityType => {

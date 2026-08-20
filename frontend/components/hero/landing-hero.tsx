@@ -20,7 +20,7 @@ export const LandingHero = () => {
           <div>
             <h1 className="align-middle leading-[70px] text-[64px] font-bold">Join Us</h1>
             <h1 className="align-middle leading-[70px] text-[64px] font-bold">On the Road.</h1>
-            <p className="text-[18px] font-semibold">We're here to support you every step of the way.</p>
+            <p className="text-[18px] font-semibold">We&apos;re here to support you every step of the way.</p>
           </div>
           <Link href="/plans">
             <Button className="mx-auto p-0 w-[259px] h-[45px] bg-[#FFCE47] text-[#2F2F2F] text-[22.5px] font-bold hover:bg-[#FFDF94]"> View Plans</Button>

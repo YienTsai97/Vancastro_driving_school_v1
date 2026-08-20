@@ -6,9 +6,10 @@ type Props = {
   instructors: getInstructorsNameType[]
   handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void
   isAddingAvailability: boolean
+  selectClassName?: string
 }
 
-export const InstructorSelector = ({ instructorId, instructors, handleChange, isAddingAvailability }: Props) => {
+export const InstructorSelector = ({ instructorId, instructors, handleChange, isAddingAvailability, selectClassName }: Props) => {
 
   return (
     <div>
@@ -18,7 +19,7 @@ export const InstructorSelector = ({ instructorId, instructors, handleChange, is
           id="instructor"
           value={instructorId ? instructorId : ""}
           onChange={handleChange}
-          className="w-[160px] h-[36px] p-2 rounded-md border-[1px] border-gray-200 shadow-sm text-[14px]"
+          className={selectClassName ?? "w-[160px] h-[36px] p-2 rounded-md border-[1px] border-gray-200 shadow-sm text-[14px]"}
           required
         >
           <option value="" className="text-gray-500" disabled>Select Instructor</option>

@@ -1,5 +1,7 @@
 import { AuthObject, clerkMiddleware } from '@clerk/express';
 import { NextFunction, Request, Response, Router } from 'express';
+import { attachAuthUser } from '../middleware/attachAuthUsers';
+import { authorizeRoutes } from '../middleware/authorizeRoutes';
 import { contractRouter } from './contract.routes';
 import { invoiceRouter } from './invoice.routes';
 import { lessonRouter } from './lesson.routes';
@@ -21,19 +23,25 @@ declare global {
 export const protectedRouter = Router();
 
 // middleware
-protectedRouter.use(clerkMiddleware());
+protectedRouter.use(clerkMiddleware());      // 403 PROFILE_NOT_FOUND
 
-protectedRouter.use(async (req: Request, res: Response, next: NextFunction) => {
-  // need to check if the user is validated
-  const userId = req.auth.userId;
+protectedRouter.use((req: Request, res: Response, next: NextFunction) => {
+  const auth = req.auth as AuthObject;
+  const isUserSession =
+    auth.tokenType === 'session_token' &&
+    auth.isAuthenticated &&
+    Boolean(auth.userId);
 
-  if (!userId) {
+  if (!isUserSession) {
     res.status(401).json({ success: false, message: 'Clerk Unauthorized' });
     return;
   }
 
   next();
 });
+
+protectedRouter.use(attachAuthUser);
+protectedRouter.use(authorizeRoutes);
 
 // routes
 protectedRouter.use('/users', userRouter);
@@ -45,3 +53,4 @@ protectedRouter.use('/contracts', contractRouter);
 protectedRouter.use('/lesson-types', lessonTypeRouter);
 protectedRouter.use('/purchases', purchaseRouter);
 protectedRouter.use('/travel-times', travelTimeRouter);
+

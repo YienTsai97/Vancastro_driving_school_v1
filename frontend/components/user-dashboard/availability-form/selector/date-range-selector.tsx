@@ -40,6 +40,7 @@ const DateRangeSelector = ({ range, handleDateRange, isSingleDate }: Props) => {
     } else {
       handleDateRange(range[0] || "", "")
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSingleDate])
 
   return (

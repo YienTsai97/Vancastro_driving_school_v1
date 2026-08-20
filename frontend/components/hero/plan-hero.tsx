@@ -22,7 +22,7 @@ export const PlanHero = () => {
           </h1>
           <p
             className="text-[15px] md:text-[18px] font-normal w-full sm:w-[460px]">
-            From beginner to advanced, we're here to guide you to confident driving, every step of the way.
+            From beginner to advanced, we&apos;re here to guide you to confident driving, every step of the way.
           </p>
           <Link href="student/purchase-lessons">
             <Button

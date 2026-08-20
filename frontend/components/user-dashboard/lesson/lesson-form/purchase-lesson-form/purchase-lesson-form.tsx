@@ -89,7 +89,7 @@ export default function PurchaseLessonForm({
       if (!lessonType) {
         continue;
       }
-      const unitPrice = lessonType.price * value;
+      const unitPrice = lessonType.price;
 
       const purchaseItem = {
         lessonTypeId,
@@ -135,7 +135,12 @@ export default function PurchaseLessonForm({
           console.error("Failed to create new payer", payerRes.message);
           return;
         }
-        payerIdToUse = payerRes.data?.id!;
+        const createdPayerId = payerRes.data?.id;
+        if (!createdPayerId) {
+          console.error("Payer was created without an id");
+          return;
+        }
+        payerIdToUse = createdPayerId;
       }
 
       // Send request to create purchase
@@ -244,7 +249,7 @@ export default function PurchaseLessonForm({
                       name='payer'
                       id='new_payer'
                       value='new_payer'
-                      onChange={(e) => setPayerId("new_payer")}
+                      onChange={() => setPayerId("new_payer")}
                     />
                     <label htmlFor='new_payer'>Create a new payer</label>
                   </p>

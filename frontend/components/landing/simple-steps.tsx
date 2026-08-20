@@ -43,7 +43,7 @@ export const SimpleSteps = () => {
         <div>
           <h5>Convenient Pickup & Drop-off</h5>
           <h6 className="width-full">
-            We'll pick you up and drop you off at the meeting point.
+            We&apos;ll pick you up and drop you off at the meeting point.
           </h6>
         </div>
         <div>
@@ -52,7 +52,7 @@ export const SimpleSteps = () => {
         </div>
         <div>
           <h5>Road Test Scheduling</h5>
-          <h6>We'll help you schedule your Road Test.</h6>
+          <h6>We&apos;ll help you schedule your Road Test.</h6>
         </div>
       </div>
     </div>

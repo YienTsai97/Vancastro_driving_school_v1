@@ -5,7 +5,6 @@ import { GoogleReview } from "./google-review"
 import { VideoReview } from "./video-review"
 
 export const Reviews = () => {
-  const [alumniComp, setAlumniComp] = useState(false)
   const [googleComp, setGoogleComp] = useState(true)
   const [videoComp, setVideoComp] = useState(false)
 
@@ -23,12 +22,12 @@ export const Reviews = () => {
           </Button> */}
           <Button
             className={`${googleComp ? "bg-[#FECE46] text-[#2f2f2f]" : "bg-[#2f2f2f]"} px-[9px] py-[6px] rounded-full hover:bg-[#2f2f2f] hover:text-[#FECE46]`}
-            onClick={() => { setAlumniComp(() => false); setGoogleComp(() => true); setVideoComp(() => false) }}>
+            onClick={() => { setGoogleComp(() => true); setVideoComp(() => false) }}>
             Google Review
           </Button>
           <Button
             className={`${videoComp ? "bg-[#FECE46] text-[#2f2f2f]" : "bg-[#2f2f2f]"} px-[9px] py-[6px] rounded-full hover:bg-[#2f2f2f] hover:text-[#FECE46]`}
-            onClick={() => { setAlumniComp(() => false); setGoogleComp(() => false); setVideoComp(() => true) }}>
+            onClick={() => { setGoogleComp(() => false); setVideoComp(() => true) }}>
             Video Review
           </Button>
         </menu>

@@ -21,10 +21,10 @@ const TimeRangeSelector = ({ selectType, index, handleRangeGroup, range }: Props
     const { name, value } = e.target
     switch (name) {
       case "start":
-        setTimeRange(([prevStart, prevEnd]) => [value, prevEnd || ""])
+        setTimeRange(([, prevEnd]) => [value, prevEnd || ""])
         break
       case "end": {
-        setTimeRange(([prevStart, prevEnd]) => [prevStart || "", value])
+        setTimeRange(([prevStart]) => [prevStart || "", value])
         break
       }
     }
@@ -32,7 +32,7 @@ const TimeRangeSelector = ({ selectType, index, handleRangeGroup, range }: Props
 
   useEffect(() => {
     handleRangeGroup(timeRange, selectType, index)
-  }, [timeRange])
+  }, [handleRangeGroup, index, selectType, timeRange])
 
   return (
     <div className="flex gap-2 justify-between items-center">

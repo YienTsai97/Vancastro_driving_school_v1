@@ -159,7 +159,7 @@ const createUser = async (req: Request, res: Response) => {
     const newUser = await prisma.user.create({
       data: {
         clerkId: clerkId!,
-        role: role || Role.STUDENT,
+        role: Role.STUDENT,
         firstName,
         lastName,
         email,
@@ -230,7 +230,7 @@ const updateUser = async (req: Request, res: Response) => {
     const updatedUser = await prisma.user.update({
       where: { id: parseInt(id) },
       data: {
-        role: role !== undefined ? role : undefined,
+        // role cannot be changed except for admin
         firstName: firstName !== undefined ? firstName : undefined,
         lastName: lastName !== undefined ? lastName : undefined,
         phone: phone !== undefined ? phone : undefined,

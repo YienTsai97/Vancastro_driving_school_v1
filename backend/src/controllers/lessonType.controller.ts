@@ -46,9 +46,9 @@ const getQbItems = async (req: Request, res: Response) => {
     // Fetch items from QuickBooks
     const qbo = await getQbo(tokenData.accessToken, tokenData.refreshToken);
     const qbItems = (await new Promise((resolve, reject) => {
-      qbo.findItems({}, (error: Error, response: any) => {
+      qbo.findItems({}, (error: any, response: any) => {
         if (error) {
-          console.error("QuickBooks API Error:", error);
+          console.error("QuickBooks API Error:", error?.response?.data?.Fault || error?.message || error);
           reject(error);
         } else resolve(response);
       });

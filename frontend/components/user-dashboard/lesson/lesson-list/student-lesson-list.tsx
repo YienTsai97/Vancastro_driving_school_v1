@@ -1,3 +1,4 @@
+"use client";
 import {
   Accordion,
   AccordionContent,
@@ -5,8 +6,9 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
-import { LessonType } from "@/types/lesson.type";
-import { LessonStatus } from '@/types/lesson.type';
+import { toast } from "@/hooks/use-toast";
+import { LessonStatus, LessonType } from "@/types/lesson.type";
+import { updateLesson } from "@/utils/lessonFetch";
 
 import moment from "moment-timezone";
 
@@ -15,6 +17,25 @@ type Props = {
 };
 
 export default function StudentLessonList({ lessons }: Props) {
+  const handleCancelLesson = async (lessonId: number) => {
+    const confirmed = confirm("Are you sure?")
+    if (!confirmed) return;
+    const res = await updateLesson(lessonId, { status: LessonStatus.CANCELLED });
+    if (res.success) {
+      toast({
+        title: "Success",
+        description: "Lesson cancelled successfully",
+        variant: "success",
+      });
+      window.location.reload()
+    } else {
+      toast({
+        title: "Error",
+        description: res.message,
+        variant: "destructive",
+      });
+    }
+  }
   return (
     <div className="w-full">
       {!lessons ? (
@@ -27,7 +48,10 @@ export default function StudentLessonList({ lessons }: Props) {
             key={lesson.id}
             type="single"
             collapsible
-            className="pb-4 border-b border-gray-200"
+            className={
+              `pb-4 border-b border-gray-200 
+              ${lesson.status === LessonStatus.CANCELLED && "opacity-50"}`
+            }
           >
             <AccordionItem value="item-1" className="border-none">
               <AccordionTrigger className="p-0 hover:no-underline">
@@ -66,7 +90,10 @@ export default function StudentLessonList({ lessons }: Props) {
                   <p>
                     Status: <strong className="">{lesson.status}</strong>
                   </p>
-                  <Button className="w-fit self-end">Cancel the Lesson</Button>
+                  <Button className="w-fit self-end" onClick={() => handleCancelLesson(lesson.id)} disabled={lesson.status !== LessonStatus.PENDING}>
+                    {lesson.status === LessonStatus.PENDING ? "Cancel the Lesson" : "Lesson Cancelled"}
+                  </Button>
+
                 </div>
               </AccordionContent>
             </AccordionItem>

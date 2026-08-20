@@ -19,8 +19,8 @@ export const twoDaysLater = (day: Date): Date => {
 
 
 export const getDates = (start: Date, end: Date): Date[] => {
-  let current = new Date(start)
-  let max = new Date(end)
+  const current = new Date(start)
+  const max = new Date(end)
   const dateGroup: Date[] = []
 
   while (current <= max) {

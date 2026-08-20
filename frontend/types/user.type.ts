@@ -1,8 +1,8 @@
 
 export enum Role {
-  ADMIN,
-  STUDENT,
-  INSTRUCTOR
+  ADMIN = "ADMIN",
+  STUDENT = "STUDENT",
+  INSTRUCTOR = "INSTRUCTOR"
 }
 
 export enum LicenseClass {

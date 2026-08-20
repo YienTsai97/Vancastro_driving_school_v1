@@ -52,7 +52,7 @@ export const SelectDateTime = ({ dateSelectable, selectedAvailability, selectedI
       const selectedTimeRange = { [selectDate]: selectedAvailability[selectDate] }
       return selectedTimeRange; // Ensure it matches AvailabilityType
     });
-  }, [selectDate]);
+  }, [selectDate, selectedAvailability]);
 
   // Lessons Data ( already sort by Instructor Id) is selected Date by default , or return null
   useEffect(() => {
@@ -67,9 +67,15 @@ export const SelectDateTime = ({ dateSelectable, selectedAvailability, selectedI
 
   return (
     <>
-      {/* Date */}
-      <div className="flex flex-col gap-[6px]">
-        <label>Select date ({selectDate})</label>
+      <div className="flex flex-col gap-3">
+        <div className="flex items-center gap-2">
+          <label className="font-bold tracking-tight text-black">Select date</label>
+          {selectDate ? (
+            <span className="rounded-full bg-[#EDEFEC] px-3 py-1 text-[11px] font-bold text-black">
+              {selectDate}
+            </span>
+          ) : null}
+        </div>
         <DateSelector
           dateSelectable={dateSelectable}
           selectDate={selectDate}
@@ -77,9 +83,15 @@ export const SelectDateTime = ({ dateSelectable, selectedAvailability, selectedI
         />
       </div>
 
-      {/* Time */}
-      <div>
-        <label>Select Time ({selectTime})</label>
+      <div className="flex flex-col gap-3">
+        <div className="flex items-center gap-2">
+          <label className="font-bold tracking-tight text-black">Select time</label>
+          {selectTime ? (
+            <span className="rounded-full bg-[#E67C73] px-2 py-0.5 text-[11px] font-bold leading-none text-white">
+              {selectTime}
+            </span>
+          ) : null}
+        </div>
         <TimeSelector
           selectTime={selectTime}
           handleSelectTime={handleSelectTime}

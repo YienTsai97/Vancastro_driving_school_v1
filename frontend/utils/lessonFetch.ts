@@ -144,6 +144,47 @@ export const getLessonsByInstructorId = async (
   }
 };
 
+export const getRecentApprovedLessonsByInstructorId = async (
+  instructorId: number,
+  options?: {
+    status?: LessonStatus;
+    from?: string; // YYYY-MM-DD
+    to?: string;
+    page?: number;
+    pageSize?: number;
+  }
+): Promise<ApiResponse<LessonType[]>> => {
+  try {
+    const { getToken } = await auth();
+    const token = await getToken();
+
+    const params = new URLSearchParams();
+    if (options?.status) params.set("status", options.status);
+    if (options?.from) params.set("from", options.from);
+    if (options?.to) params.set("to", options.to);
+    if (options?.page) params.set("page", String(options.page));
+    if (options?.pageSize) params.set("pageSize", String(options.pageSize));
+
+    const query = params.toString();
+    const url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/lessons/instructor/${instructorId}${query ? `?${query}` : ""}`;
+
+    const res = await fetch(url, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!res.ok) {
+      return { success: false, message: `Error: ${res.status} ${res.statusText}` };
+    }
+    return await res.json();
+  } catch (err) {
+    console.error(err);
+    return { success: false, message: "Error: Unable to fetch lessons by instructor id" };
+  }
+};
 /**
  * Create lesson
  * @param lessonData {LessonRequestData} - The lesson object to create

@@ -77,10 +77,13 @@ export default function CalendarDateSelector({ selectDate, handleSelectDate, eve
       (entries) => callbackEntries(entries),
       options
     )
-    dateRefs.current.forEach((el) => el && observer.observe(el))
+    const observedElements = dateRefs.current.filter(
+      (element): element is HTMLButtonElement => element !== null
+    )
+    observedElements.forEach((element) => observer.observe(element))
 
     return (() => {
-      dateRefs.current.forEach((el) => el && observer.unobserve(el))
+      observedElements.forEach((element) => observer.unobserve(element))
     })
   }, [visibleRange])
 

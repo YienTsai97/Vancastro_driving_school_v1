@@ -108,26 +108,20 @@ export default function QuickBooksIntegration({
           <div className="mt-3 pt-3 border-t border-gray-100">
             <div className="grid grid-cols-2 gap-2 text-sm">
               <div>
-                <span className="text-gray-500">Token expires:</span>
-                <span className="block font-medium text-gray-800">
+                <p className="text-gray-500">Token expires:</p>
+                <p className="block font-medium text-gray-800">
                   {tokenExpiresAt
-                    ? new Date(tokenExpiresAt).toLocaleString()
+                    ? new Date(tokenExpiresAt).toISOString()
                     : "N/A"}
-                  <div className="text-[8px] text-gray-500">
-                    MM/DD/YYYY
-                  </div>
-                </span>
+                </p>
               </div>
               <div>
-                <span className="text-gray-500">Refresh token expires:</span>
-                <span className="block font-medium text-gray-800">
+                <p className="text-gray-500">Refresh token expires:</p>
+                <p className="block font-medium text-gray-800">
                   {refreshTokenExpiresAt
-                    ? new Date(refreshTokenExpiresAt).toLocaleString()
+                    ? new Date(refreshTokenExpiresAt).toISOString()
                     : "N/A"}
-                  <div className="text-[8px] text-gray-500">
-                    MM/DD/YYYY
-                  </div>
-                </span>
+                </p>
               </div>
             </div>
           </div>

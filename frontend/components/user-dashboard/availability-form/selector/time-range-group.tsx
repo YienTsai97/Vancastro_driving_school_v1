@@ -2,7 +2,7 @@ import { subtractExceptions } from "@/components/features/time-range-substract"
 import { Button } from "@/components/ui/button"
 import { RangeType, SubtractRangeType } from "@/types/time.type"
 import { Minus, Plus } from "lucide-react"
-import { useEffect, useState, useTransition } from "react"
+import { useCallback, useEffect, useState, useTransition } from "react"
 import TimeRangeSelector from "./time-range-selector"
 
 type Props = {
@@ -39,21 +39,23 @@ export const TimeRangeGroup = ({ selectTime, setSelectTime, singleRangeData, isS
     })
   }
 
-  const handleRangeGroup = (input: RangeType, selectType: string, index: number) => {
+  const handleRangeGroup = useCallback((input: RangeType, selectType: string, index: number) => {
     if (selectType === "available") {
       setAvailable((prev) => {
+        if (JSON.stringify(prev[index]) === JSON.stringify(input)) return prev
         const updated = [...prev]
         updated[index] = [...input]
-        return [...updated]
+        return updated
       })
     } else if (selectType === "exception") {
       setException((prev) => {
+        if (JSON.stringify(prev[index]) === JSON.stringify(input)) return prev
         const updated = [...prev]
         updated[index] = [...input]
-        return [...updated]
+        return updated
       })
     }
-  }
+  }, [])
 
   useEffect(() => {
     if (!available.every(range => range[0] !== "" && range[1] !== "") ||
@@ -64,22 +66,29 @@ export const TimeRangeGroup = ({ selectTime, setSelectTime, singleRangeData, isS
     if (JSON.stringify(selectTime) !== JSON.stringify(newSelectTime)) {
       setSelectTime(newSelectTime);
     }
-  }, [available, exception])
+  }, [available, exception, selectTime, setSelectTime])
 
 
   useEffect(() => {
     if (isSingleDate && singleRangeData) {
-      if (JSON.stringify(available) === JSON.stringify(singleRangeData)) return
       startTransition(() => {
-        setAvailable(() => {
-          return [...singleRangeData];
-        })
+        setAvailable((currentAvailable) =>
+          JSON.stringify(currentAvailable) === JSON.stringify(singleRangeData)
+            ? currentAvailable
+            : [...singleRangeData]
+        )
       })
     }
 
     if (!isSingleDate && !singleRangeData) {
       startTransition(() => {
-        setAvailable(() => [["", ""]])
+        setAvailable((currentAvailable) =>
+          currentAvailable.length === 1 &&
+            currentAvailable[0][0] === "" &&
+            currentAvailable[0][1] === ""
+            ? currentAvailable
+            : [["", ""]]
+        )
       })
     }
   }, [isSingleDate, singleRangeData])

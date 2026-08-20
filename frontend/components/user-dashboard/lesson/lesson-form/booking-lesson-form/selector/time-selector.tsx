@@ -52,7 +52,7 @@ export const TimeSelector = ({ selectTime, handleSelectTime, availabilityData, l
 
     if (lessonTimeRange.length === 0) return
     setLessonWithFullTime(() => lessonTimeRange)
-  }, [lessonData, selectLocation])
+  }, [lessonData, selectLocation, selectedTravelTimes])
 
   // availabilityData -> sort by lessonWithFullTime -> New Availablity Data
   const [newAvData, setNewAvData] = useState<SubtractRangeType[] | null>(null)
@@ -93,59 +93,72 @@ export const TimeSelector = ({ selectTime, handleSelectTime, availabilityData, l
   }, [newAvData, lessonLength])
 
 
+  const timeButtonClass = (timePoint: string) =>
+    `h-10 rounded-full px-5 text-sm tracking-tight hover:text-black ${
+      selectTime === timePoint
+        ? "bg-[#EDEFEC] font-bold text-black"
+        : "border border-gray-200 bg-white font-semibold text-[#777777]"
+    }`;
+
   return (
-    <div>
-      <p>Morning</p>
-      {(newAvData && lessonLength !== 0) ?
-        <div className="flex flex-wrap gap-3">
-          {openingTime.morning.map((timePoint, index) => (
-            <Button
-              type="button"
-              key={index}
-              variant={null}
-              onClick={() => handleSelectTime(timePoint)}
-              className={`${selectTime === timePoint ? "text-yellow-600 border-yellow-600" : ""}  border-[2px] rounded-lg`}
-            >
-              {timePoint}
-            </Button>
-          ))}
-        </div>
-        : null
-      }
-      <p>Afternoon</p>
-      {(newAvData && lessonLength !== 0) ?
-        <div className="flex flex-wrap gap-3">
-          {openingTime.afternoon.map((timePoint, index) => (
-            <Button
-              type="button"
-              key={index}
-              variant={null}
-              onClick={() => handleSelectTime(timePoint)}
-              className={`${selectTime === timePoint ? "text-yellow-600 border-yellow-600" : ""}  border-[2px] rounded-lg`}
-            >
-              {timePoint}
-            </Button>
-          ))}
-        </div>
-        : null
-      }
-      <p>Evening</p>
-      {(newAvData && lessonLength !== 0) ?
-        <div className="flex flex-wrap gap-3">
-          {openingTime.evening.map((timePoint, index) => (
-            <Button
-              type="button"
-              key={index}
-              variant={null}
-              onClick={() => handleSelectTime(timePoint)}
-              className={`${selectTime === timePoint ? "text-yellow-600 border-yellow-600" : ""}  border-[2px] rounded-lg`}
-            >
-              {timePoint}
-            </Button>
-          ))}
-        </div>
-        : null
-      }
+    <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-2">
+        <p className="font-semibold tracking-tight text-[#777777]">Morning</p>
+        {(newAvData && lessonLength !== 0) ?
+          <div className="flex flex-wrap gap-2">
+            {openingTime.morning.map((timePoint, index) => (
+              <Button
+                type="button"
+                key={index}
+                variant={null}
+                onClick={() => handleSelectTime(timePoint)}
+                className={timeButtonClass(timePoint)}
+              >
+                {timePoint}
+              </Button>
+            ))}
+          </div>
+          : <p className="text-sm font-semibold text-[#777777]">Choose a class and date first.</p>
+        }
+      </div>
+      <div className="flex flex-col gap-2">
+        <p className="font-semibold tracking-tight text-[#777777]">Afternoon</p>
+        {(newAvData && lessonLength !== 0) ?
+          <div className="flex flex-wrap gap-2">
+            {openingTime.afternoon.map((timePoint, index) => (
+              <Button
+                type="button"
+                key={index}
+                variant={null}
+                onClick={() => handleSelectTime(timePoint)}
+                className={timeButtonClass(timePoint)}
+              >
+                {timePoint}
+              </Button>
+            ))}
+          </div>
+          : null
+        }
+      </div>
+      <div className="flex flex-col gap-2">
+        <p className="font-semibold tracking-tight text-[#777777]">Evening</p>
+        {(newAvData && lessonLength !== 0) ?
+          <div className="flex flex-wrap gap-2">
+            {openingTime.evening.map((timePoint, index) => (
+              <Button
+                type="button"
+                key={index}
+                variant={null}
+                onClick={() => handleSelectTime(timePoint)}
+                className={timeButtonClass(timePoint)}
+              >
+                {timePoint}
+              </Button>
+            ))}
+          </div>
+          : null
+        }
+      </div>
       {/* <p>Course Length: {lessonLength ?? 0}min</p>
       <strong>Final Availability: {JSON.stringify(newAvData)}</strong> */}
       {/* <p>Opening Before Sort by lesson Length: </p> */}

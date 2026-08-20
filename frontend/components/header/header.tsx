@@ -37,7 +37,7 @@ export default function Header({ userRole }: Props) {
               <SignedIn>
                 <Popover>
                   <PopoverTrigger>
-                    <HeaderUser userRole={userRole} />
+                    <HeaderUser />
                   </PopoverTrigger>
                   <PopoverContent className="w-fit mt-5 mr-16 bg-white rounded-lg  text-[16px] font-medium flex flex-col gap-4 px-5 py-4 border-2 border-[#2F2F2F]">
                     <Link
@@ -55,7 +55,7 @@ export default function Header({ userRole }: Props) {
                 </Popover>
               </SignedIn>
               <SignedOut>
-                <HeaderUser userRole={userRole} />
+                <HeaderUser />
               </SignedOut>
             </div>
           </div>
@@ -80,7 +80,7 @@ export default function Header({ userRole }: Props) {
             <Link
               className={`font-semibold hover:text-[#FFCE47] flex items-center gap-4`}
               href={userRole === "INSTRUCTOR" ? "/instructor/dashboard" : "/student/dashboard"}>
-              <HeaderUser userRole={userRole} />
+              <HeaderUser />
               <p>My Dashboard</p>
             </Link>
             <NavMenu />
@@ -91,7 +91,7 @@ export default function Header({ userRole }: Props) {
           </SignedIn>
           <SignedOut>
             <NavMenu />
-            <HeaderUser userRole={userRole} />
+            <HeaderUser />
           </SignedOut>
         </div>
       )}
