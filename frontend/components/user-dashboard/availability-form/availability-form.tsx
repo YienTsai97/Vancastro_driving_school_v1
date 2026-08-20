@@ -1,5 +1,5 @@
 "use client";
-import { convertToLocal, convertToUTC } from "@/components/features/availability-utc-local-converter";
+import { convertToUTC, toLocalAvailabilities } from "@/components/features/availability-utc-local-converter";
 import { formattoLocalDate } from "@/components/features/date-input-select-check";
 import { Button } from "@/components/ui/button";
 import {
@@ -39,11 +39,7 @@ type Props = {
 
 export const AvailabilityForm = ({ instructors, availabilities }: Props) => {
   const localAvailabilities = useMemo(
-    () =>
-      availabilities.map((item) => ({
-        id: item.id,
-        availability: convertToLocal(item.utcSlots, "local"),
-      })),
+    () => toLocalAvailabilities(availabilities),
     [availabilities]
   );
   //Add button

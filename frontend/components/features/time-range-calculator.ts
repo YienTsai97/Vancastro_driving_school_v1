@@ -11,6 +11,11 @@ export const minutesToTime = (minutes: number): string => {
   return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
 }
 
+export const QUARTER_HOUR_TIMES: string[] = Array.from(
+  { length: 24 * 4 },
+  (_, index) => minutesToTime(index * 15)
+);
+
 
 export const generateTimePoint = (start: string, end: string, lessonLength: number): timeSelectType => {
   const timePoints: timeSelectType = {

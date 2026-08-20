@@ -1,5 +1,5 @@
 "use client";
-import { convertToLocal } from "@/components/features/availability-utc-local-converter";
+import { toLocalAvailabilities } from "@/components/features/availability-utc-local-converter";
 import { formattoLocalDate } from "@/components/features/date-input-select-check";
 import { convertlessonFromUTCToLocal } from "@/components/features/lesson-utc-local-converter";
 import { getSelectableLocations } from "@/components/features/selectable-location";
@@ -47,11 +47,7 @@ export default function BookingLessonForm({
   );
 
   const localAvailabilities = useMemo(
-    () =>
-      availabilities.map((item) => ({
-        id: item.id,
-        availability: convertToLocal(item.utcSlots, "local"),
-      })),
+    () => toLocalAvailabilities(availabilities),
     [availabilities]
   );
 
