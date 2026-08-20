@@ -1,7 +1,7 @@
 import { getAuth } from "@clerk/express";
 import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
-import { getQbo } from "../api/qbo";
+import { findOrCreateQbCustomer, findOrCreateQbServiceItem, getQbo } from "../api/qbo";
 import { ensureQuickBooksAuthorization } from "../api/quickbooksAuth";
 
 const prisma = new PrismaClient();
@@ -211,38 +211,22 @@ const createInvoice = async (req: Request, res: Response) => {
       return;
     }
 
+    const qbo = await getQbo(tokenData.accessToken, tokenData.refreshToken);
     let qbCustomerIdToUse = purchase.payer.qbCustomerId;
 
-    // Create customer in QuickBooks and add id to payer data in database if not exists
+    // Reuse an existing QuickBooks customer when Neon has no stored ID
     if (!purchase.payer.qbCustomerId) {
-      const qbo = await getQbo(tokenData.accessToken, tokenData.refreshToken);
-      const customerData = {
-        DisplayName: `${purchase.payer.firstName} ${purchase.payer.lastName
-          } - #${Date.now() + Math.floor(Math.random() * 1000)}`,
-        GivenName: purchase.payer.firstName,
-        FamilyName: purchase.payer.lastName,
-        PrimaryPhone: {
-          FreeFormNumber: purchase.payer.phone,
-        },
-        PrimaryEmailAddr: {
-          Address: purchase.payer.email,
-        },
-      };
-      const customer = (await new Promise((resolve, reject) => {
-        qbo.createCustomer(customerData, (error: any, response: any) => {
-          if (error) {
-            console.error("QuickBooks API Error:", error?.response?.data?.Fault || error?.message || error);
-            reject(error);
-          } else resolve(response);
-        });
-      })) as any;
+      qbCustomerIdToUse = await findOrCreateQbCustomer(qbo, {
+        firstName: purchase.payer.firstName,
+        lastName: purchase.payer.lastName,
+        email: purchase.payer.email,
+        phone: purchase.payer.phone,
+      });
 
       await prisma.payer.update({
         where: { id: purchase.payer.id },
-        data: { qbCustomerId: customer.Id },
+        data: { qbCustomerId: qbCustomerIdToUse },
       });
-
-      qbCustomerIdToUse = customer.Id;
     }
 
     // Prepare items data
@@ -273,36 +257,21 @@ const createInvoice = async (req: Request, res: Response) => {
 
           let qbServiceIdToUse = lessonType.qbServiceId;
 
-          // Create service item in QuickBooks and add id to lesson type data in database if not exists
+          // Reuse an existing QuickBooks item when Neon has no stored ID
           if (!lessonType.qbServiceId) {
-            const qbo = await getQbo(
-              tokenData.accessToken,
-              tokenData.refreshToken
+            const serviceName = `${lessonType.licenseClass.replace(/_/g, " ")} ${
+              lessonType.lessonName
+            }`;
+            qbServiceIdToUse = await findOrCreateQbServiceItem(
+              qbo,
+              serviceName,
+              Number(lessonType.price)
             );
-            const serviceItemData = {
-              Name: `${lessonType.licenseClass.replace("_", " ")} ${lessonType.lessonName
-                }`,
-              Type: "Service",
-              IncomeAccountRef: { value: process.env.QUICKBOOKS_INCOME_ACCOUNT_ID || "79" },
-              UnitPrice: lessonType.price,
-            };
-            const serviceItem = (await new Promise((resolve, reject) => {
-              qbo.createItem(serviceItemData, (error: any, response: any) => {
-                if (error) {
-                  console.error("QuickBooks API Error:", error?.response?.data?.Fault || error?.message || error);
-                  reject(error);
-                } else {
-                  resolve(response);
-                }
-              });
-            })) as any;
 
             await prisma.lessonType.update({
               where: { id: lessonType.id },
-              data: { qbServiceId: serviceItem.Id },
+              data: { qbServiceId: qbServiceIdToUse },
             });
-
-            qbServiceIdToUse = serviceItem.Id;
           }
 
           return {
@@ -356,7 +325,6 @@ const createInvoice = async (req: Request, res: Response) => {
     };
 
     // Create invoice in QuickBooks
-    const qbo = await getQbo(tokenData.accessToken, tokenData.refreshToken);
     quickBooksInvoice = await new Promise((resolve, reject) => {
       qbo.createInvoice(requestData, (error: any, response: any) => {
         if (error) {
