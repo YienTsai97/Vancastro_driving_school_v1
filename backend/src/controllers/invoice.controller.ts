@@ -1,3 +1,4 @@
+import { getAuth } from "@clerk/express";
 import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
 import { getQbo } from "../api/qbo";
@@ -50,12 +51,23 @@ const include = {
   },
 };
 
+//serialize invoice data to avoid type errors
+const serializeInvoice = (invoice: any) => ({
+  ...invoice,
+  totalAmount: Number(invoice.totalAmount),
+  invoiceTransactions:
+    invoice.invoiceTransactions?.map((tx: any) => ({
+      ...tx,
+      amount: Number(tx.amount),
+    })) ?? [],
+});
+
 const getInvoices = async (req: Request, res: Response) => {
   try {
     const invoices = await prisma.invoice.findMany({
       include: include,
     });
-    res.status(200).json({ success: true, data: invoices });
+    res.status(200).json({ success: true, data: invoices.map(serializeInvoice) });
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, message: "Internal server error" });
@@ -64,6 +76,12 @@ const getInvoices = async (req: Request, res: Response) => {
 
 const getInvoiceById = async (req: Request, res: Response) => {
   try {
+    const authUser = req.authUser;
+    if (!authUser) {
+      res.status(403).json({ success: false, message: "Profile not found" });
+      return;
+    }
+
     // Fetch invoice by id from the database
     const dbInvoice = await prisma.invoice.findUnique({
       where: {
@@ -75,6 +93,11 @@ const getInvoiceById = async (req: Request, res: Response) => {
       res
         .status(404)
         .json({ success: false, message: "Invoice not found in database" });
+      return;
+    }
+
+    if (authUser.role === "STUDENT" && dbInvoice.userId !== authUser.id) {
+      res.status(403).json({ success: false, message: "Forbidden" });
       return;
     }
 
@@ -104,7 +127,7 @@ const getInvoiceById = async (req: Request, res: Response) => {
 
     res
       .status(200)
-      .json({ success: true, data: { dbInvoice, quickBooksInvoice } });
+      .json({ success: true, data: { dbInvoice: serializeInvoice(dbInvoice), quickBooksInvoice } });
   } catch (error) {
     console.error("Error fetching invoice by id", error);
     res.status(500).json({ success: false, message: "Internal server error" });
@@ -125,7 +148,7 @@ const getInvoicesByUserId = async (req: Request, res: Response) => {
         .json({ success: false, message: "Invoices not found in database" });
       return;
     }
-    res.status(200).json({ success: true, data: invoices });
+    res.status(200).json({ success: true, data: invoices.map(serializeInvoice) });
   } catch (error) {
     console.error("Error fetching invoices by user id", error);
     res.status(500).json({ success: false, message: "Internal server error" });
@@ -133,6 +156,12 @@ const getInvoicesByUserId = async (req: Request, res: Response) => {
 };
 
 const createInvoice = async (req: Request, res: Response) => {
+
+  const authUser = await prisma.user.findUnique({ where: { clerkId: getAuth(req).userId! } });
+  if (!authUser || authUser.role === "STUDENT") {
+    res.status(403).json({ success: false, message: "Instructor only" });
+    return
+  }
   let quickBooksInvoice: any = null;
 
   try {
@@ -358,7 +387,7 @@ const createInvoice = async (req: Request, res: Response) => {
       success: true,
       data: {
         quickBooksInvoice: quickBooksInvoice,
-        dbInvoice: dbInvoice,
+        dbInvoice: serializeInvoice(dbInvoice),
       },
     });
   } catch (error: any) {
@@ -449,7 +478,7 @@ const editInvoice = async (req: Request, res: Response) => {
         res.status(404).json({ success: false, message: "Invoice not found" });
         return;
       }
-      res.status(200).json({ success: true, data: dbInvoice });
+      res.status(200).json({ success: true, data: serializeInvoice(dbInvoice) });
       return;
     }
 
@@ -566,7 +595,7 @@ const editInvoice = async (req: Request, res: Response) => {
         success: true,
         data: {
           quickBooksInvoice,
-          dbInvoice,
+          dbInvoice: serializeInvoice(dbInvoice),
         },
       });
     });

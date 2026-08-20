@@ -25,6 +25,7 @@ export const InstructorMenu = ({ isMobile }: Props) => {
   const [hoverProfile, setHoverProfile] = useState<boolean>(false);
   const { toggleSidebar } = useSidebar()
   const handleClick = () => isMobile && toggleSidebar();
+
   return (
     <>
       <Link

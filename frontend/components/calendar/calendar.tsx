@@ -1,6 +1,6 @@
 "use client";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { LessonEventType, LessonType } from "@/types/lesson.type";
+import { LessonEventType, LessonStatus, LessonType } from "@/types/lesson.type";
 import { EventImpl } from "@fullcalendar/core/internal";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
@@ -51,9 +51,12 @@ export default function Calendar({ lessons }: Props) {
   useEffect(() => {
     const parsedEvents: LessonEventType[] = [];
     if (lessons) {
-      const filteredLessons = lessons.filter(lesson => {
-        return selectedInstructors.some(instructor => instructor?.instructorId === lesson.instructorId)
-      })
+      const filteredLessons = lessons.filter((lesson) => {
+        if (lesson.status === LessonStatus.CANCELLED) return false;
+        return selectedInstructors.some(
+          (instructor) => instructor?.instructorId === lesson.instructorId
+        );
+      });
       filteredLessons.forEach((lesson) => {
         parsedEvents.push({
           ...lesson,
@@ -66,11 +69,10 @@ export default function Calendar({ lessons }: Props) {
     setEvents(parsedEvents);
   }, [lessons, selectedInstructors]);
 
-  const getColor = (name: string) => {
-    if (name === "Andresa") return "#E67C73"
-    if (name === "Anderson") return "#049BE5"
-    else return "#FFCE47"
-  }
+  const getEventColor = (status: string) => {
+    if (status === LessonStatus.PENDING) return "#E67C73";
+    return "#FFCE47";
+  };
 
   const handleViewChange = (view: string) => {
     setShowGrid(() => view)
@@ -203,26 +205,30 @@ export default function Calendar({ lessons }: Props) {
           )
         }}
         eventContent={(arg) => {
+          const status = arg.event.extendedProps.status as string;
           if (arg.view.type === "dayGridMonth") {
             return (
               <div
-                className={`w-2 h-2 rounded-md border-2`}
-                style={{ backgroundColor: getColor(arg.event.extendedProps.instructor.firstName) ?? "#FFCE47" }}
-              >
-              </div>
+                className="w-2 h-2 rounded-md border-2"
+                style={{ backgroundColor: getEventColor(status) }}
+              />
             );
           }
+
           return (
             <div className="p-1 font-normal">
               <p className="text-[18px]">
-                {arg.event.extendedProps.student.firstName} {arg.event.extendedProps.student.lastName}
+                {arg.event.extendedProps.student.firstName}{" "}
+                {arg.event.extendedProps.student.lastName}
               </p>
+              <p className="text-[10px]">@ {arg.event.title}</p>
               <p className="text-[10px]">
-                @ {arg.event.title}
+                {arg.event.extendedProps.instructor.firstName} -{" "}
+                {moment(arg.event.start).format("h:mm A")}
               </p>
-              <p className="text-[10px]">
-                {arg.event.extendedProps.instructor.firstName} - {moment(arg.event.start).format("h:mm A")}
-              </p>
+              {status === LessonStatus.PENDING && (
+                <p className="text-[10px] text-[#E67C73] font-semibold">Pending</p>
+              )}
             </div>
           );
         }}
@@ -243,8 +249,9 @@ export default function Calendar({ lessons }: Props) {
             },
           ]}
         eventDidMount={(info) => {
-          const name = info.event.extendedProps.instructor.firstName;
-          info.el.style.backgroundColor = showGrid === "dayGridMonth" ? "transparent" : getColor(name);
+          const status = info.event.extendedProps.status as string;
+          info.el.style.backgroundColor =
+            showGrid === "dayGridMonth" ? "transparent" : getEventColor(status);
         }
         }
       />
@@ -265,13 +272,16 @@ export default function Calendar({ lessons }: Props) {
             Student: {lesson?.extendedProps.student.firstName}{" "}
             {lesson?.extendedProps.student.lastName}
           </h3>
+          <h3>
+            Status: {lesson?.extendedProps.status}
+          </h3>
         </DialogContent>
       </Dialog >
-      {lessons &&
+      {events.length > 0 && (
         <div className="md:text-end pb-5 font-semibold">
-          <p>Total: {lessons.length} lessons</p>
+          <p>Total: {events.length} lessons</p>
         </div>
-      }
+      )}
     </div >
   );
 }

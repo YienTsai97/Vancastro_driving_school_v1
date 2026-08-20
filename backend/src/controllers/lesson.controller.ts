@@ -227,6 +227,7 @@ const createLesson = async (req: Request, res: Response) => {
 
 const editLesson = async (req: Request<{ id: string }>, res: Response) => {
   try {
+
     const { studentId, instructorId, startTime, endTime, status, location } =
       req.body;
     const lesson = await prisma.lesson.update({

@@ -1,13 +1,14 @@
 import InvoiceList from '@/components/user-dashboard/finance_invoice/invoice-list';
+import { getRemainingAmount } from '@/utils/invoiceAmount';
 import { getInvoicesByUserId } from '@/utils/invoiceFetch';
 import { getPurchases } from '@/utils/purchaseFetch';
-import { currentUser } from '@clerk/nextjs/server';
 import { getUserByClerkId } from '@/utils/userFetch';
+import { currentUser } from '@clerk/nextjs/server';
 import { Clock, Package } from 'lucide-react';
 
 export default async function StudentInvoices() {
   const clerkUser = await currentUser();
-  
+
   if (!clerkUser) {
     return (
       <div className="flex items-center justify-center h-64 w-full">
@@ -18,13 +19,13 @@ export default async function StudentInvoices() {
       </div>
     );
   }
-  
+
   const user = await getUserByClerkId(clerkUser.id);
   const [invoicesResponse, purchasesResponse] = await Promise.all([
     getInvoicesByUserId(user.id),
     getPurchases(),
   ]);
-  
+
   const invoices = invoicesResponse?.data || [];
   const pendingPurchases = (purchasesResponse?.data || []).filter(
     (p) => p.userId === user.id && p.status === "PENDING"
@@ -87,22 +88,19 @@ export default async function StudentInvoices() {
             <p className="text-sm text-gray-500">Total Due</p>
             <p className="text-2xl font-bold">
               ${invoices.reduce((sum, invoice) => {
-                const paidAmount = invoice.invoiceTransactions?.reduce(
-                  (txSum, transaction) => txSum + transaction.amount, 0
-                ) || 0;
-                return sum + (invoice.totalAmount - paidAmount);
+                return sum + getRemainingAmount(invoice.totalAmount, invoice.invoiceTransactions)
               }, 0).toFixed(2)}
             </p>
           </div>
-          
+
           <div className="bg-gray-50 rounded-lg p-4">
             <p className="text-sm text-gray-500">Invoices</p>
             <p className="text-2xl font-bold">{invoices.length}</p>
           </div>
-          
+
         </div>
 
-        <InvoiceList 
+        <InvoiceList
           isStudent={true}
           invoices={invoices}
         />

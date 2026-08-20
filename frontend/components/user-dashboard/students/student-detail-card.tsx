@@ -2,6 +2,7 @@ import { LessonStatusDataType } from "@/app/(user-side)/instructor/students/[id]
 import { LicenseClass } from "@/types/enums";
 import { InvoiceType } from "@/types/invoice.type";
 import { UserType } from "@/types/user.type";
+import { getTotalPaid } from "@/utils/invoiceAmount";
 import { Car, DollarSign, Mail, Phone, ScrollText } from "lucide-react";
 
 type Props = {
@@ -127,10 +128,11 @@ export default function StudentDetailCard({
         <div className='flex flex-col'>
           {invoices.length > 0 ? (
             invoices.map((invoice) => {
-              const paidAmount = invoice.invoiceTransactions.reduce(
-                (acc, transaction) => acc + transaction.amount,
-                0
-              );
+              // const paidAmount = invoice.invoiceTransactions.reduce(
+              //   (acc, transaction) => acc + transaction.amount,
+              //   0
+              // );
+              const paidAmount = getTotalPaid(invoice.invoiceTransactions);
               return (
                 <div key={invoice.id} className='flex flex-col gap-1 p-1'>
                   <div className='flex justify-between text-sm'>
@@ -178,8 +180,8 @@ export default function StudentDetailCard({
                 {typeof contractData.createdAt === "string"
                   ? formatToDDMMYYYY(contractData.createdAt)
                   : contractData.createdAt instanceof Date
-                  ? formatToDDMMYYYY(contractData.createdAt.toISOString())
-                  : "No contract created date available"}
+                    ? formatToDDMMYYYY(contractData.createdAt.toISOString())
+                    : "No contract created date available"}
               </p>
             </>
           ) : (

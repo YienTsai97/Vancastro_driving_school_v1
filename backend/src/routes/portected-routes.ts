@@ -1,5 +1,7 @@
 import { AuthObject, clerkMiddleware } from '@clerk/express';
 import { NextFunction, Request, Response, Router } from 'express';
+import { attachAuthUser } from '../middleware/attachAuthUsers';
+import { authorizeRoutes } from '../middleware/authorizeRoutes';
 import { contractRouter } from './contract.routes';
 import { invoiceRouter } from './invoice.routes';
 import { lessonRouter } from './lesson.routes';
@@ -21,7 +23,7 @@ declare global {
 export const protectedRouter = Router();
 
 // middleware
-protectedRouter.use(clerkMiddleware());
+protectedRouter.use(clerkMiddleware());      // 403 PROFILE_NOT_FOUND
 
 protectedRouter.use((req: Request, res: Response, next: NextFunction) => {
   const auth = req.auth as AuthObject;
@@ -38,6 +40,9 @@ protectedRouter.use((req: Request, res: Response, next: NextFunction) => {
   next();
 });
 
+protectedRouter.use(attachAuthUser);
+protectedRouter.use(authorizeRoutes);
+
 // routes
 protectedRouter.use('/users', userRouter);
 protectedRouter.use('/invoices', invoiceRouter);
@@ -48,3 +53,4 @@ protectedRouter.use('/contracts', contractRouter);
 protectedRouter.use('/lesson-types', lessonTypeRouter);
 protectedRouter.use('/purchases', purchaseRouter);
 protectedRouter.use('/travel-times', travelTimeRouter);
+
