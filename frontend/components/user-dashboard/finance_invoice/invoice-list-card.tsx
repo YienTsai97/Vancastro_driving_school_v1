@@ -125,7 +125,7 @@ export default function InvoiceListCard(
               <div className="text-right">
                 <p className="text-lg font-semibold">${invoice.totalAmount || 0}</p>
                 <p className="text-sm text-gray-500">
-                  {new Date(invoice.createdAt || Date.now()).toLocaleDateString()}
+                  {new Date(invoice.createdAt || Date.now()).toLocaleDateString("en-CA")}
                 </p>
               </div>
             </div>
@@ -177,7 +177,7 @@ export default function InvoiceListCard(
                           {invoice.lessons?.map((lesson, lessonIndex) => (
                             <tr key={lessonIndex}>
                               <td className="px-4 py-2 text-sm">{lesson.location || '-'}</td>
-                              <td className="px-4 py-2 text-sm">{new Date(lesson.startTime || Date.now()).toLocaleDateString()}</td>
+                              <td className="px-4 py-2 text-sm">{new Date(lesson.startTime || Date.now()).toLocaleDateString("en-CA")}</td>
                               <td className="px-4 py-2 text-sm text-right">
                                 {lesson.status === 'COMPLETED' && <CheckCircle className="size-4 text-green-500 inline ml-1" />}
                                 {lesson.status === 'CANCELLED' && <XCircle className="size-4 text-red-500 inline ml-1" />}
@@ -223,7 +223,7 @@ export default function InvoiceListCard(
                           {invoice.invoiceTransactions?.map((transaction, txIndex) => (
                             <tr key={txIndex}>
                               <td className="px-4 py-2 text-sm">${transaction.amount}</td>
-                              <td className="px-4 py-2 text-sm">{new Date(transaction.issueDate || Date.now()).toLocaleDateString()}</td>
+                              <td className="px-4 py-2 text-sm">{new Date(transaction.issueDate || Date.now()).toLocaleDateString("en-CA")}</td>
                             </tr>
                           ))}
                           {(!invoice.invoiceTransactions || invoice.invoiceTransactions.length === 0) && (

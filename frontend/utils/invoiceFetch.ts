@@ -7,6 +7,16 @@ import {
 } from "@/types/invoice.type";
 import { auth } from "@clerk/nextjs/server";
 
+async function readApiErrorMessage(response: Response): Promise<string> {
+  const fallback = `Error: ${response.status} ${response.statusText}`;
+  try {
+    const body = (await response.json()) as { message?: string };
+    return body?.message || fallback;
+  } catch {
+    return fallback;
+  }
+}
+
 
 /**
  * Fetch all invoices
@@ -25,7 +35,7 @@ export const getInvoices = async (): Promise<ApiResponse<InvoiceType[]>> => {
     if (!response.ok) {
       return {
         success: false,
-        message: `Error: ${response.status} ${response.statusText}`,
+        message: await readApiErrorMessage(response),
       };
     }
     return await response.json();
@@ -59,7 +69,7 @@ export const getInvoiceById = async (
     if (!response.ok) {
       return {
         success: false,
-        message: `Error: ${response.status} ${response.statusText}`,
+        message: await readApiErrorMessage(response),
       };
     }
     return await response.json();
@@ -93,7 +103,7 @@ export const getInvoicesByUserId = async (
     if (!response.ok) {
       return {
         success: false,
-        message: `Error: ${response.status} ${response.statusText}`,
+        message: await readApiErrorMessage(response),
       };
     }
     return await response.json();
@@ -129,7 +139,7 @@ export const createInvoice = async (
     if (!response.ok) {
       return {
         success: false,
-        message: `Error: ${response.status} ${response.statusText}`,
+        message: await readApiErrorMessage(response),
       };
     }
     return await response.json();
@@ -208,7 +218,7 @@ export const updateInvoice = async (
     if (!response.ok) {
       return {
         success: false,
-        message: `Error: ${response.status} ${response.statusText}`,
+        message: await readApiErrorMessage(response),
       };
     }
     return await response.json();
@@ -251,7 +261,7 @@ export const deleteInvoice = async (
     if (!response.ok) {
       return {
         success: false,
-        message: `Error: ${response.status} ${response.statusText}`,
+        message: await readApiErrorMessage(response),
       };
     }
     return await response.json();

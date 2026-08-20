@@ -148,21 +148,6 @@ export default function CreateInvoiceForm({ purchase, payerName }: Props) {
         </label>
         <p className='w-full px-3 py-2rounded'>{`${payerName}` || ""}</p>
       </div>
-      <div>
-        <label className='block text-gray-700 font-bold mb-2' htmlFor='dueDate'>
-          Due Date
-        </label>
-        <input
-          type='date'
-          id='dueDate'
-          name='dueDate'
-          value={formData.dueDate || ""}
-          onChange={handleChange}
-          className='w-full px-3 py-2 border border-gray-300 rounded'
-          required
-        />
-      </div>
-
       <form onSubmit={handleSubmit}>
         <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
           <div>

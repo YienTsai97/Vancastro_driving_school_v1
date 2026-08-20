@@ -11,14 +11,11 @@ import { PurchaseType } from '@/types/purchase.type';
 import { useRouter } from "next/navigation";
 
 
-export default function PurchaseRequestsList({ userId, pendingPurchases }: { userId: number, pendingPurchases: PurchaseType[] }) {
+export default function PurchaseRequestsList({ pendingPurchases }: { userId: number, pendingPurchases: PurchaseType[] }) {
   // const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
   const purchaseRequests = pendingPurchases
-
-console.log(userId)
-
 
   const handleCreateInvoiceFromPurchase = (purchaseId:number) => {
     router.push(`/instructor/finance/request/${purchaseId}`);
@@ -87,9 +84,9 @@ console.log(userId)
               </td>
               <td className="px-3 py-4 whitespace-nowrap">
                 <div className="text-sm text-gray-900">
-                  {new Date(data.createdAt).toLocaleDateString()} 
+                  {new Date(data.createdAt).toLocaleDateString("en-CA")}
                   <div className="text-[8px] text-gray-500">
-                    MM/DD/YYYY
+                    YYYY-MM-DD
                   </div>
                 </div>
               </td>
